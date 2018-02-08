@@ -22,7 +22,6 @@ import org.apache.shiro.mgt.SubjectFactory;
 import org.apache.shiro.spring.web.config.AbstractShiroWebConfiguration;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
-import org.pac4j.cas.config.CasConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -42,7 +41,7 @@ import io.buji.pac4j.subject.Pac4jSubjectFactory;
 	"org.apache.shiro.spring.boot.ShiroBizWebAutoConfiguration" // spring-boot-starter-shiro-biz
 })
 @ConditionalOnWebApplication
-@ConditionalOnClass({CallbackFilter.class, SecurityFilter.class, SecurityFilter.class, CasConfiguration.class})
+@ConditionalOnClass({CallbackFilter.class, SecurityFilter.class, SecurityFilter.class })
 @ConditionalOnProperty(prefix = ShiroPac4jProperties.PREFIX, value = "enabled", havingValue = "true")
 @EnableConfigurationProperties({ ShiroBizProperties.class })
 public class ShiroPac4jWebAutoConfiguration extends AbstractShiroWebConfiguration {

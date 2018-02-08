@@ -27,7 +27,6 @@ import org.apache.shiro.spring.boot.utils.StringUtils;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.spring.web.config.AbstractShiroWebFilterConfiguration;
 import org.apache.shiro.web.servlet.AbstractShiroFilter;
-import org.pac4j.cas.config.CasConfiguration;
 import org.pac4j.core.authorization.authorizer.CheckHttpMethodAuthorizer;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
@@ -79,7 +78,7 @@ import io.buji.pac4j.filter.SecurityFilter;
 	"org.apache.shiro.spring.boot.ShiroBizWebFilterConfiguration" // spring-boot-starter-shiro-biz
 })
 @ConditionalOnWebApplication
-@ConditionalOnClass({CallbackFilter.class, SecurityFilter.class, LogoutFilter.class, CasConfiguration.class})
+@ConditionalOnClass({CallbackFilter.class, SecurityFilter.class, LogoutFilter.class})
 @ConditionalOnProperty(prefix = ShiroPac4jProperties.PREFIX, value = "enabled", havingValue = "true")
 @EnableConfigurationProperties({ ShiroPac4jProperties.class, ShiroBizProperties.class, ServerProperties.class })
 @SuppressWarnings("rawtypes")
@@ -95,12 +94,6 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	private ServerProperties serverProperties;
 	@Autowired
 	private Pac4jPathBuilder pathBuilder;
-	
-	@Bean
-	@ConditionalOnMissingBean
-	protected AjaxRequestResolver ajaxRequestResolver() {
-		return new DefaultAjaxRequestResolver();
-	}
 	
 	@Bean
 	@ConditionalOnMissingBean
@@ -120,21 +113,8 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	}
 	
 	@Bean
-	public Config config(@Autowired(required = false) @Qualifier("defaultClient") Client defaultClient,
-			List<Client> clientList, AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver,
-			HttpActionAdapter<Object, J2EContext> httpActionAdapter,SessionStore<J2EContext> sessionStore) {
+	public Config config(Clients clients, HttpActionAdapter<Object, J2EContext> httpActionAdapter,SessionStore<J2EContext> sessionStore) {
 
-		final Clients clients = new Clients();
-		
-		clients.setAjaxRequestResolver(ajaxRequestResolver);
-		clients.setCallbackUrl(pac4jProperties.getCallbackUrl());
-		clients.setClients(clientList);
-		clients.setClientNameParameter(pac4jProperties.getClientParameterName());
-		if(defaultClient != null) {
-			clients.setDefaultClient(defaultClient);
-		}
-		clients.setUrlResolver(urlResolver);
-		
 		final Config config = new Config(clients);
 		
 		if(StringUtils.hasText(pac4jProperties.getAllowedIpRegexpPattern())) {	

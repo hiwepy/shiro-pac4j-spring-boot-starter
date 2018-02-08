@@ -185,12 +185,12 @@
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
-            <artifactId>pac4j-openid</artifactId>
+            <artifactId>pac4j-oidc</artifactId>
             <version>${pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
-            <artifactId>pac4j-oidc</artifactId>
+            <artifactId>pac4j-openid</artifactId>
             <version>${pac4j.version}</version>
         </dependency>
         <dependency>
