@@ -1,4 +1,4 @@
-package org.apereo.cas.spring.boot;
+package org.apache.shiro.spring.boot;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

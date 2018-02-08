@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.shiro.spring.boot.pac4j;
+package org.apache.shiro.spring.boot.pac4j.ext;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ import org.pac4j.core.context.WebContext;
 import org.pac4j.core.exception.HttpAction;
 import org.pac4j.core.profile.CommonProfile;
 
-public class Pac4jInternalAuthorizer extends ProfileAuthorizer<CommonProfile> {
+public class Pac4jExternalAuthorizer extends ProfileAuthorizer<CommonProfile> {
 
     @Override
     public boolean isAuthorized(final WebContext context, final List<CommonProfile> profiles) throws HttpAction {
@@ -35,6 +35,26 @@ public class Pac4jInternalAuthorizer extends ProfileAuthorizer<CommonProfile> {
         if (profile == null) {
             return false;
         }
+        /*context.getFullRequestURL()
+        context.getPath()
+        context.getRemoteAddr()
+        context.getRequestAttribute(name)
+        context.getRequestContent()
+        context.getRequestCookies()
+        context.getRequestHeader(name)
+        context.getRequestMethod()
+        context.getRequestParameter(name)
+        context.getRequestParameters()
+        context.getScheme()
+        context.getServerName()
+        context.getServerPort()
+        context.getSessionAttribute(name)
+        context.getSessionIdentifier()
+        
+        profile.getPermissions()
+        profile.getRoles()
+        */
+        
         return StringUtils.startsWith(profile.getUsername(), "jle");
     }
 
