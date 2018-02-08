@@ -19,28 +19,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.shiro.spring.boot.pac4j.Pac4jPathBuilder;
 import org.apache.shiro.spring.boot.pac4j.ShiroPac4jFilterFactoryBean;
-import org.apache.shiro.spring.boot.pac4j.ext.Pac4jRelativeUrlResolver;
 import org.apache.shiro.spring.boot.pac4j.ext.filter.Pac4jUserFilter;
-import org.apache.shiro.spring.boot.pac4j.utils.CasClientUtils;
 import org.apache.shiro.spring.boot.pac4j.utils.CasUrlUtils;
 import org.apache.shiro.spring.boot.utils.StringUtils;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.spring.web.config.AbstractShiroWebFilterConfiguration;
 import org.apache.shiro.web.servlet.AbstractShiroFilter;
-import org.jasig.cas.client.session.SingleSignOutHttpSessionListener;
-import org.jasig.cas.client.util.CommonUtils;
-import org.pac4j.cas.client.CasClient;
 import org.pac4j.cas.config.CasConfiguration;
-import org.pac4j.cas.logout.CasLogoutHandler;
-import org.pac4j.cas.logout.DefaultCasLogoutHandler;
 import org.pac4j.core.authorization.authorizer.CheckHttpMethodAuthorizer;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.HttpConstants.HTTP_METHOD;
 import org.pac4j.core.context.J2EContext;
-import org.pac4j.core.context.WebContext;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.http.AjaxRequestResolver;
 import org.pac4j.core.http.DefaultAjaxRequestResolver;
@@ -50,6 +43,7 @@ import org.pac4j.core.http.UrlResolver;
 import org.pac4j.http.authorization.authorizer.IpRegexpAuthorizer;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -58,7 +52,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
@@ -87,74 +80,22 @@ import io.buji.pac4j.filter.SecurityFilter;
 })
 @ConditionalOnWebApplication
 @ConditionalOnClass({CallbackFilter.class, SecurityFilter.class, LogoutFilter.class, CasConfiguration.class})
-@ConditionalOnProperty(prefix = ShiroPac4jCasProperties.PREFIX, value = "enabled", havingValue = "true")
-@EnableConfigurationProperties({ ShiroPac4jCasProperties.class, ShiroBizProperties.class, ServerProperties.class })
-public class ShiroPac4jCasWebFilterConfiguration extends AbstractShiroWebFilterConfiguration implements ApplicationContextAware {
+@ConditionalOnProperty(prefix = ShiroPac4jProperties.PREFIX, value = "enabled", havingValue = "true")
+@EnableConfigurationProperties({ ShiroPac4jProperties.class, ShiroBizProperties.class, ServerProperties.class })
+@SuppressWarnings("rawtypes")
+public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConfiguration implements ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
 
 	@Autowired
-	private ShiroPac4jCasProperties pac4jProperties;
+	private ShiroPac4jProperties pac4jProperties;
 	@Autowired
 	private ShiroBizProperties bizProperties;
 	@Autowired
 	private ServerProperties serverProperties;
+	@Autowired
+	private Pac4jPathBuilder pathBuilder;
 	
-	/**
-	 * 单点登录Session监听器
-	 */
-	@Bean(name = "singleSignOutHttpSessionListener")
-	public ServletListenerRegistrationBean<SingleSignOutHttpSessionListener> singleSignOutHttpSessionListener() {
-		ServletListenerRegistrationBean<SingleSignOutHttpSessionListener> registration = new ServletListenerRegistrationBean<SingleSignOutHttpSessionListener>(
-				new SingleSignOutHttpSessionListener());
-		registration.setOrder(1);
-		return registration;
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-    public CasLogoutHandler<WebContext> logoutHandler(){
-		return new DefaultCasLogoutHandler<WebContext>();
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	protected UrlResolver urlResolver() {
-		return new Pac4jRelativeUrlResolver(serverProperties.getContextPath());
-	}
-	
-	@Bean
-    public CasConfiguration casConfiguration(CasLogoutHandler<WebContext> logoutHandler, UrlResolver urlResolver) {
-
-		// 完整的cas登录地址,比如client项目的https://passport.xxx.com/login?service=https://client.xxx.com
-		String serverLoginUrl = CasUrlUtils.constructLoginRedirectUrl(pac4jProperties, serverProperties.getContextPath(), pac4jProperties.getServerCallbackUrl());
-		
-		CasConfiguration configuration = new CasConfiguration(serverLoginUrl, pac4jProperties.getCasProtocol() );
-		
-		if(pac4jProperties.isAcceptAnyProxy() && StringUtils.hasText(pac4jProperties.getAllowedProxyChains())) {	
-			configuration.setAcceptAnyProxy(pac4jProperties.isAcceptAnyProxy());
-			configuration.setAllowedProxyChains(CommonUtils.createProxyList(pac4jProperties.getAllowedProxyChains()));
-		}
-		
-		if(StringUtils.hasText(pac4jProperties.getEncoding())) {	
-			configuration.setEncoding(pac4jProperties.getEncoding());
-		}
-		configuration.setGateway(pac4jProperties.isGateway());
-		configuration.setLoginUrl(pac4jProperties.getCasServerLoginUrl());
-		configuration.setLogoutHandler(logoutHandler);
-		if(StringUtils.hasText(pac4jProperties.getServiceParameterName())) {	
-			configuration.setPostLogoutUrlParameter(pac4jProperties.getServiceParameterName());
-		}
-		configuration.setPrefixUrl(pac4jProperties.getCasServerUrlPrefix());
-		configuration.setProtocol(pac4jProperties.getCasProtocol());
-		//configuration.setRenew(pac4jProperties.isRenew());
-		configuration.setRestUrl(pac4jProperties.getCasServerRestUrl());
-		configuration.setTimeTolerance(pac4jProperties.getTolerance());
-		configuration.setUrlResolver(urlResolver);
-		
-		return configuration;
-	}
-
 	@Bean
 	@ConditionalOnMissingBean
 	protected AjaxRequestResolver ajaxRequestResolver() {
@@ -173,33 +114,25 @@ public class ShiroPac4jCasWebFilterConfiguration extends AbstractShiroWebFilterC
 		return J2ENopHttpActionAdapter.INSTANCE;
 	}
 	
-	@SuppressWarnings("rawtypes")
 	@Bean
-	public Config casConfig(CasConfiguration configuration, AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver,
+	protected Pac4jPathBuilder pac4jPathBuilder() {
+		return new Pac4jPathBuilder();
+	}
+	
+	@Bean
+	public Config config(@Autowired(required = false) @Qualifier("defaultClient") Client defaultClient,
+			List<Client> clientList, AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver,
 			HttpActionAdapter<Object, J2EContext> httpActionAdapter,SessionStore<J2EContext> sessionStore) {
 
 		final Clients clients = new Clients();
-		final List<Client> clientList = new ArrayList<Client>();
-		CasClient casClient = CasClientUtils.casClient(configuration, pac4jProperties, serverProperties);
-		clientList.add(casClient);
-		if(pac4jProperties.isDirectCasClient()) {
-			clientList.add(CasClientUtils.directCasClient(configuration, pac4jProperties));
-		}
-		if(pac4jProperties.isDirectCasProxyClient()) {
-			clientList.add(CasClientUtils.directCasProxyClient(configuration, pac4jProperties, pac4jProperties.getCasServerUrlPrefix()));
-		}
-		if(pac4jProperties.isCasRestBasicAuthClient()) {
-			clientList.add(CasClientUtils.casRestBasicAuthClient(configuration, pac4jProperties));
-		}
-		if(pac4jProperties.isCasRestFormClient()) {
-			clientList.add(CasClientUtils.casRestFormClient(configuration, pac4jProperties));
-		}
 		
 		clients.setAjaxRequestResolver(ajaxRequestResolver);
-		clients.setCallbackUrl(pac4jProperties.getServerCallbackUrl());
+		clients.setCallbackUrl(pac4jProperties.getCallbackUrl());
 		clients.setClients(clientList);
 		clients.setClientNameParameter(pac4jProperties.getClientParameterName());
-		clients.setDefaultClient(casClient);
+		if(defaultClient != null) {
+			clients.setDefaultClient(defaultClient);
+		}
 		clients.setUrlResolver(urlResolver);
 		
 		final Config config = new Config(clients);
@@ -252,7 +185,7 @@ public class ShiroPac4jCasWebFilterConfiguration extends AbstractShiroWebFilterC
         logoutFilter.setConfig(config);
         
         // Default logourl url
-        logoutFilter.setDefaultUrl( CasUrlUtils.constructLogoutRedirectUrl(pac4jProperties, serverProperties.getContextPath(), bizProperties.getLoginUrl()) );
+        logoutFilter.setDefaultUrl(pathBuilder.getLogoutURL(serverProperties.getContextPath()));
         // Whether the application logout must be performed（是否注销本地应用身份认证）
         logoutFilter.setLocalLogout(pac4jProperties.isLocalLogout());
         // Pattern that logout urls must match（注销登录路径规则，用于匹配登录请求操作）
@@ -295,7 +228,7 @@ public class ShiroPac4jCasWebFilterConfiguration extends AbstractShiroWebFilterC
 	public FilterRegistrationBean casSsoFilter(){
 		FilterRegistrationBean registration = new FilterRegistrationBean(); 
 		Pac4jUserFilter userFilter = new Pac4jUserFilter();
-		userFilter.setLoginUrl(CasUrlUtils.constructLoginRedirectUrl(pac4jProperties, serverProperties.getContextPath(), pac4jProperties.getServerCallbackUrl()));
+		//userFilter.setLoginUrl(CasUrlUtils.constructLoginRedirectUrl(pac4jProperties, serverProperties.getContextPath(), pac4jProperties.getServerCallbackUrl()));
 		registration.setFilter(userFilter);
 	    registration.setEnabled(false); 
 	    return registration;
@@ -305,7 +238,7 @@ public class ShiroPac4jCasWebFilterConfiguration extends AbstractShiroWebFilterC
 	/**
 	 * 回调过滤器 ：处理登录后的回调访问
 	 */
-	@Bean("cas")
+	@Bean("pac4j")
 	public FilterRegistrationBean callbackFilter(Config config){
 		
 		FilterRegistrationBean filterRegistration = new FilterRegistrationBean();
@@ -325,6 +258,7 @@ public class ShiroPac4jCasWebFilterConfiguration extends AbstractShiroWebFilterC
 	    return filterRegistration;
 	}
 	
+	
 	/**
 	 * 权限控制过滤器 ：权限过滤链的入口（仅是FactoryBean需要引用）
 	 */
@@ -335,7 +269,7 @@ public class ShiroPac4jCasWebFilterConfiguration extends AbstractShiroWebFilterC
 		ShiroFilterFactoryBean filterFactoryBean = new ShiroPac4jFilterFactoryBean();
 		
 		// 登录地址：会话不存在时访问的地址
-		filterFactoryBean.setLoginUrl(CasUrlUtils.constructLoginRedirectUrl(pac4jProperties, serverProperties.getContextPath(), CasUrlUtils.constructCallbackUrl(pac4jProperties)));
+		filterFactoryBean.setLoginUrl(pathBuilder.getLoginURL(serverProperties.getContextPath()));
 		// 系统主页：登录成功后跳转路径
 		filterFactoryBean.setSuccessUrl(bizProperties.getSuccessUrl());
 		// 异常页面：无权限时的跳转路径

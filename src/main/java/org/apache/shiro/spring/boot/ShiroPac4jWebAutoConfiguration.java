@@ -43,9 +43,9 @@ import io.buji.pac4j.subject.Pac4jSubjectFactory;
 })
 @ConditionalOnWebApplication
 @ConditionalOnClass({CallbackFilter.class, SecurityFilter.class, SecurityFilter.class, CasConfiguration.class})
-@ConditionalOnProperty(prefix = ShiroPac4jCasProperties.PREFIX, value = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = ShiroPac4jProperties.PREFIX, value = "enabled", havingValue = "true")
 @EnableConfigurationProperties({ ShiroBizProperties.class })
-public class ShiroPac4jCasWebAutoConfiguration extends AbstractShiroWebConfiguration {
+public class ShiroPac4jWebAutoConfiguration extends AbstractShiroWebConfiguration {
 	
 	@Autowired
 	private ShiroBizProperties bizProperties;
@@ -61,7 +61,7 @@ public class ShiroPac4jCasWebAutoConfiguration extends AbstractShiroWebConfigura
 			chainDefinition.addPathDefinitions(pathDefinitions);
 			return chainDefinition;
 		}
-		chainDefinition.addPathDefinition("/callback", "cas");
+		chainDefinition.addPathDefinition("/callback", "pac4j");
 		chainDefinition.addPathDefinition("/logout", "logout");
 		chainDefinition.addPathDefinition("/**", "authc");
 		return chainDefinition;

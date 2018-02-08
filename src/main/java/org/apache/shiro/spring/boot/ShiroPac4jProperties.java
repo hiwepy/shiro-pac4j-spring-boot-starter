@@ -3,9 +3,13 @@ package org.apache.shiro.spring.boot;
 import org.pac4j.cas.authorization.DefaultCasAuthorizationGenerator;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.context.DefaultAuthorizers;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
+@ConfigurationProperties(ShiroPac4jProperties.PREFIX)
 public class ShiroPac4jProperties {
 
+	public static final String PREFIX = "shiro.pac4j";
+	
 	/* ================================== Shiro Pac4j ================================= */
 	
 	/**
@@ -17,11 +21,10 @@ public class ShiroPac4jProperties {
     private String allowedIpRegexpPattern;
     
     private String[] allowedHttpMethods;
-    
 	/** The Name of Client. */
 	private String clientName;
 	/** Defines the location of the client callback URL, i.e. https://localhost:8080/myapp/callback */
-	//private String callbackUrl;
+	private String callbackUrl;
 	/** Specifies the name of the request parameter on where to find the clientName (i.e. client_name). */
 	private String clientParameterName = Clients.DEFAULT_CLIENT_NAME_PARAMETER;
 	
@@ -322,7 +325,7 @@ public class ShiroPac4jProperties {
 	public void setAllowedHttpMethods(String[] allowedHttpMethods) {
 		this.allowedHttpMethods = allowedHttpMethods;
 	}
-
+	
 	public String getClientName() {
 		return clientName;
 	}
@@ -331,13 +334,13 @@ public class ShiroPac4jProperties {
 		this.clientName = clientName;
 	}
 
-	/*public String getCallbackUrl() {
+	public String getCallbackUrl() {
 		return callbackUrl;
 	}
 
 	public void setCallbackUrl(String callbackUrl) {
 		this.callbackUrl = callbackUrl;
-	}*/
+	}
 
 	public String getClientParameterName() {
 		return clientParameterName;

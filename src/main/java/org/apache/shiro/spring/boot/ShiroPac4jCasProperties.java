@@ -6,7 +6,7 @@ import org.pac4j.core.context.Pac4jConstants;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(ShiroPac4jCasProperties.PREFIX)
-public class ShiroPac4jCasProperties extends ShiroPac4jProperties {
+public class ShiroPac4jCasProperties {
 
 	public static final String PREFIX = "shiro.pac4j.cas";
 
@@ -74,29 +74,30 @@ public class ShiroPac4jCasProperties extends ShiroPac4jProperties {
 	private CasProtocol casProtocol = CasProtocol.CAS20_PROXY;
 	
     /** CasClient */
-    private String casClientName = "CasClient";
+	private boolean casClient = false;
+    private String casClientName = "cas";
     
     /** DirectCasClient */
     
     private boolean directCasClient = false;
-    private String directCasClientName = "DirectCasClient";
+    private String directCasClientName = "direct-cas";
     
     /** DirectCasProxyClient */
     
     private boolean directCasProxyClient = false;
-    private String directCasProxyClientName = "DirectCasProxyClient";
+    private String directCasProxyClientName = "direct-cas-proxy";
     
     /** CasRestBasicAuthClient */
     
     private boolean casRestBasicAuthClient = false;
-    private String casRestBasicAuthClientName = "RestBasicAuthClient";
+    private String casRestBasicAuthClientName = "cas-rest-basic";
     private String headerName = HttpConstants.AUTHORIZATION_HEADER;
     private String prefixHeader = HttpConstants.BASIC_HEADER_PREFIX;
     
     /** CasRestFormClient */
     
     private boolean casRestFormClient = false;
-    private String casRestFormClientName = "RestFormClient";
+    private String casRestFormClientName = "cas-rest-form";
     private String usernameParameterName = Pac4jConstants.USERNAME;
     private String passwordParameterName = Pac4jConstants.PASSWORD;
 
@@ -242,6 +243,14 @@ public class ShiroPac4jCasProperties extends ShiroPac4jProperties {
 
 	public void setCasProtocol(CasProtocol casProtocol) {
 		this.casProtocol = casProtocol;
+	}
+
+	public boolean isCasClient() {
+		return casClient;
+	}
+
+	public void setCasClient(boolean casClient) {
+		this.casClient = casClient;
 	}
 
 	public String getCasClientName() {

@@ -22,6 +22,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import org.apache.shiro.spring.boot.ShiroPac4jCasProperties;
+import org.apache.shiro.spring.boot.ShiroPac4jProperties;
 import org.apache.shiro.spring.boot.utils.StringUtils;
 import org.apache.shiro.web.util.WebUtils;
 import org.jasig.cas.client.util.CommonUtils;
@@ -37,9 +38,9 @@ public class CasUrlUtils {
 		return callbackUrlBuilder.toString();
 	}
 	
-	public static String constructCallbackUrl(ShiroPac4jCasProperties casProperties) {
+	public static String constructCallbackUrl(ShiroPac4jCasProperties casProperties, ShiroPac4jProperties pac4jProperties) {
 		String callbackUrl = casProperties.getServerCallbackUrl();
-		StringBuilder callbackUrlBuilder = new StringBuilder(callbackUrl).append((callbackUrl.contains("?") ? "&" : "?")).append(casProperties.getClientParameterName()).append("=").append(casProperties.getClientName());
+		StringBuilder callbackUrlBuilder = new StringBuilder(callbackUrl).append((callbackUrl.contains("?") ? "&" : "?")).append(pac4jProperties.getClientParameterName()).append("=").append(pac4jProperties.getClientName());
 		return callbackUrlBuilder.toString();
 	}
 	

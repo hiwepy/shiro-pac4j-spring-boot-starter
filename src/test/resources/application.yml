@@ -24,20 +24,20 @@ shiro:
     /kaptcha* : anon
     /sockets/** : anon
     /logout : logout
-    /callback : cas
+    /callback : pac4j
     /index : sessionExpired,sessionControl,authc
     /** : sessionExpired,sessionControl,authc
-  pac4j:
-    cas:
+    pac4j:
       accept-any-proxy: true
-      authorizers: securityheaders, cas
+      authorizers: xssprotection
       enabled: true
       encoding: UTF-8
       cas-client-name: cas
       cas-server-login-url: http://127.0.0.1:10000/cas/login
       cas-server-logout-url: http://127.0.0.1:10000/cas/logout
       cas-server-url-prefix: http://127.0.0.1:10000/cas
+      clients: cas
       client-name: cas
       server-callback-url: /callback
-      server-name: http://127.0.0.1:8080
+      server-name: http://127.0.0.1:8081
     
