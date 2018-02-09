@@ -19,6 +19,7 @@ import org.apache.shiro.spring.boot.ShiroBizProperties;
 import org.apache.shiro.spring.boot.ShiroPac4jCasProperties;
 import org.apache.shiro.spring.boot.ShiroPac4jProperties;
 import org.apache.shiro.spring.boot.pac4j.utils.CasUrlUtils;
+import org.apache.shiro.spring.boot.pac4j.utils.Pac4jUrlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class Pac4jPathBuilder {
@@ -31,21 +32,27 @@ public class Pac4jPathBuilder {
 	private ShiroPac4jCasProperties casProperties;
 	
 	public String getLoginURL(String contextPath) {
-		
-		if(casProperties != null && casProperties.isCasClient()) {
-			return CasUrlUtils.constructLoginRedirectUrl(casProperties, contextPath, CasUrlUtils.constructCallbackUrl(casProperties, pac4jProperties));
+		// 如果是Cas认证，则构造Cas登录跳转地址
+		if(casProperties != null && (casProperties.isCasClient() || casProperties.isDirectCasClient() || casProperties.isDirectCasProxyClient())) {
+			// 回调URL, i.e. /callback?client_name=cas
+			String callbackUrl = Pac4jUrlUtils.constructCallbackUrl(pac4jProperties);
+			// 完整的Cas登录URL,i.e. https://localhost:8443/cas/login?service=https://localhost:8080/myapp/callback?client_name=cas
+			return CasUrlUtils.constructLoginRedirectUrl(casProperties, contextPath, callbackUrl);
 		}
-		
-		return null;
+		// 常规的登录地址
+		return Pac4jUrlUtils.constructCallbackUrl(contextPath, bizProperties.getLoginUrl());
 	}
 	
 	public String getLogoutURL(String contextPath) {
-		
-		if(casProperties != null && casProperties.isCasClient()) {
-			return CasUrlUtils.constructLogoutRedirectUrl(casProperties, contextPath, bizProperties.getLoginUrl());
+		// 如果是Cas认证，则构造Cas注销跳转地址：注销后进入Cas登录界面，登录后重新跳转回来进行cas认证
+		if(casProperties != null && (casProperties.isCasClient() || casProperties.isDirectCasClient() || casProperties.isDirectCasProxyClient())) {
+			// 回调URL, i.e. /callback?client_name=cas
+			String callbackUrl = Pac4jUrlUtils.constructCallbackUrl(pac4jProperties);
+			// 完整的Cas登录URL,i.e. https://localhost:8443/cas/login?service=https://localhost:8080/myapp/callback?client_name=cas
+			return CasUrlUtils.constructLoginRedirectUrl(casProperties, contextPath, callbackUrl);
 		}
-		
-		return null;
+		// 常规的注销地址：注销后进入本地登录页面
+		return Pac4jUrlUtils.constructCallbackUrl(contextPath, bizProperties.getLoginUrl());
 	}
 
 }

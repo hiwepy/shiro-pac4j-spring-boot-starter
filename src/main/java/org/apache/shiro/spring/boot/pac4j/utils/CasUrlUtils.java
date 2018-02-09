@@ -22,28 +22,81 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import org.apache.shiro.spring.boot.ShiroPac4jCasProperties;
-import org.apache.shiro.spring.boot.ShiroPac4jProperties;
 import org.apache.shiro.spring.boot.utils.StringUtils;
 import org.apache.shiro.web.util.WebUtils;
 import org.jasig.cas.client.util.CommonUtils;
 
 public class CasUrlUtils {
+	
+	/**
+	 * 
+	 * @description	： TODO
+	 * @author 		： <a href="https://github.com/vindell">vindell</a>
+	 * @date 		：2018年2月9日 上午10:17:48
+	 * @param casProperties : Cas 服务端配置参数
+	 * @param casServerPath : Cas 服务端地址，如 login、logout 等
+	 * @param contextPath	: 本地应用名称
+	 * @param serverUrl		: 回调地址
+	 * @return
+	 */
+	public static String constructRedirectUrl(ShiroPac4jCasProperties casProperties, String casServerPath, String contextPath, String serverUrl)  {
 
-	public static String constructCallbackUrl(String contextPath, String serverUrl) {
-		contextPath = StringUtils.hasText(contextPath) ? contextPath : "/";
-		if (contextPath.endsWith("/")) {
-			contextPath = contextPath.substring(0, contextPath.length() - 1);
+		StringBuilder casRedirectUrl = new StringBuilder(casProperties.getCasServerUrlPrefix());
+		if (!casRedirectUrl.toString().endsWith("/")) {
+			casRedirectUrl.append("/");
 		}
-		StringBuilder callbackUrlBuilder = new StringBuilder(contextPath).append(serverUrl);
-		return callbackUrlBuilder.toString();
+		casRedirectUrl.append(casServerPath);
+		// 构造完整的回调URL,i.e. https://localhost:8080/myapp/callback?client_name=cas
+		String callbackUrl = CasUrlUtils.constructCallbackUrl(casProperties, contextPath, serverUrl);
+		
+		return CommonUtils.constructRedirectUrl(casRedirectUrl.toString(), casProperties.getServiceParameterName(), callbackUrl, casProperties.isRenew(), casProperties.isGateway());
+		
 	}
 	
-	public static String constructCallbackUrl(ShiroPac4jCasProperties casProperties, ShiroPac4jProperties pac4jProperties) {
-		String callbackUrl = casProperties.getServerCallbackUrl();
-		StringBuilder callbackUrlBuilder = new StringBuilder(callbackUrl).append((callbackUrl.contains("?") ? "&" : "?")).append(pac4jProperties.getClientParameterName()).append("=").append(pac4jProperties.getClientName());
-		return callbackUrlBuilder.toString();
+	/**
+	 * 
+	 * @description	： 构造完整的Cas注销URL,比如client项目的 https://localhost:8443/cas/logout?service=https://localhost:8080/myapp/callback?client_name=cas
+	 * @author 		： <a href="https://github.com/vindell">vindell</a>
+	 * @date 		：2018年2月9日 上午10:09:15
+	 * @param casProperties : Cas 服务端配置参数
+	 * @param contextPath	: 本地应用名称
+	 * @param serverUrl		: 回调地址
+	 * @return
+	 */
+	public static String constructLogoutRedirectUrl(ShiroPac4jCasProperties casProperties, String contextPath, String serverUrl){
+		// 构造完整的回调URL,i.e. https://localhost:8080/myapp/callback?client_name=cas
+		String callbackUrl = CasUrlUtils.constructCallbackUrl(casProperties, contextPath, serverUrl);
+		// 使用 casServerLogoutUrl 构造完整的Cas登录URL
+		return CommonUtils.constructRedirectUrl(casProperties.getCasServerLogoutUrl(), casProperties.getServiceParameterName(), callbackUrl, casProperties.isRenew(), casProperties.isGateway());
 	}
 	
+	/**
+	 * 
+	 * @description	： 构造完整的Cas登录URL,i.e. https://localhost:8443/cas/login?service=https://localhost:8080/myapp/callback?client_name=cas
+	 * @author 		： <a href="https://github.com/vindell">vindell</a>
+	 * @date 		：2018年2月9日 上午10:09:01
+	 * @param casProperties : Cas 服务端配置参数
+	 * @param contextPath	: 本地应用名称
+	 * @param serverUrl		: 回调地址
+	 * @return
+	 */
+	public static String constructLoginRedirectUrl(ShiroPac4jCasProperties casProperties, String contextPath, String serverUrl){
+		// 构造完整的回调URL,i.e. https://localhost:8080/myapp/callback?client_name=cas
+		String callbackUrl = CasUrlUtils.constructCallbackUrl(casProperties, contextPath, serverUrl);
+		// 使用 casServerLoginUrl 构造完整的Cas登录URL
+		return CommonUtils.constructRedirectUrl(casProperties.getCasServerLoginUrl(), casProperties.getServiceParameterName(), callbackUrl, casProperties.isRenew(), casProperties.isGateway());
+	}
+	
+	/**
+	 * 
+	 * @description	： 完整的回调URL,i.e. https://localhost:8080/myapp/callback?client_name=cas
+	 * @author 		： <a href="https://github.com/vindell">vindell</a>
+	 * @date 		：2018年2月9日 上午10:11:33
+	 * @param casProperties : Cas 服务端配置参数
+	 * @param contextPath	: 本地应用名称
+	 * @param serverUrl		: 回调地址
+	 * @return
+	 */
 	public static String constructCallbackUrl(ShiroPac4jCasProperties casProperties, String contextPath, String serverUrl) {
 
 		contextPath = StringUtils.hasText(contextPath) ? contextPath : "/";
@@ -69,36 +122,20 @@ public class CasUrlUtils {
 
 	}
 	
-	public static String constructRedirectUrl(ShiroPac4jCasProperties casProperties, String casServerPath, String contextPath, String serverUrl)  {
-
-		StringBuilder casRedirectUrl = new StringBuilder(casProperties.getCasServerUrlPrefix());
-		if (!casRedirectUrl.toString().endsWith("/")) {
-			casRedirectUrl.append("/");
-		}
-		casRedirectUrl.append(casServerPath);
-		
-		String callbackUrl = CasUrlUtils.constructCallbackUrl(casProperties, contextPath, serverUrl);
-		
-		return CommonUtils.constructRedirectUrl(casRedirectUrl.toString(), casProperties.getServiceParameterName(), callbackUrl, casProperties.isRenew(), casProperties.isGateway());
-		
-	}
-	
-	public static String constructLogoutRedirectUrl(ShiroPac4jCasProperties casProperties, String contextPath, String serverUrl){
-		String callbackUrl = CasUrlUtils.constructCallbackUrl(casProperties, contextPath, serverUrl);
-		return CommonUtils.constructRedirectUrl(casProperties.getCasServerLogoutUrl(), casProperties.getServiceParameterName(), callbackUrl, casProperties.isRenew(), casProperties.isGateway());
-	}
-	
-	public static String constructLoginRedirectUrl(ShiroPac4jCasProperties casProperties, String contextPath, String serverUrl){
-		String callbackUrl = CasUrlUtils.constructCallbackUrl(casProperties, contextPath, serverUrl);
-		return CommonUtils.constructRedirectUrl(casProperties.getCasServerLoginUrl(), casProperties.getServiceParameterName(), callbackUrl, casProperties.isRenew(), casProperties.isGateway());
-	}
-	
-	public static String constructServiceUrl(ServletRequest request, ServletResponse response, ShiroPac4jCasProperties casProperties) {
-		
-		return CommonUtils.constructServiceUrl(WebUtils.toHttp(request), WebUtils.toHttp(response), casProperties.getServerName(),
+	/**
+	 * 
+	 * @description	： 根据当前请求构造回调地址
+	 * @author 		： <a href="https://github.com/vindell">vindell</a>
+	 * @date 		：2018年2月9日 上午10:14:57
+	 * @param request		: ServletRequest
+	 * @param response		: ServletResponse
+	 * @param casProperties : Cas 服务端配置参数
+	 * @return
+	 */
+	public static String constructCallbackUrl(ServletRequest request, ServletResponse response, ShiroPac4jCasProperties casProperties) {
+		return CommonUtils.constructServiceUrl(WebUtils.toHttp(request), WebUtils.toHttp(response), casProperties.getService(),
 				casProperties.getServerName(), casProperties.getServiceParameterName(),
 				casProperties.getArtifactParameterName(), casProperties.isEncodeServiceUrl());
-		
 	}
 	
 }

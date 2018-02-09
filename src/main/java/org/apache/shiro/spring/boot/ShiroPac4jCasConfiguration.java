@@ -17,10 +17,7 @@ package org.apache.shiro.spring.boot;
 
 import org.apache.shiro.spring.boot.pac4j.ext.Pac4jRelativeUrlResolver;
 import org.apache.shiro.spring.boot.pac4j.utils.CasClientUtils;
-import org.apache.shiro.spring.boot.pac4j.utils.CasUrlUtils;
 import org.apache.shiro.spring.boot.utils.StringUtils;
-import org.apache.shiro.spring.web.config.AbstractShiroWebFilterConfiguration;
-import org.jasig.cas.client.configuration.BaseConfigurationStrategy;
 import org.jasig.cas.client.session.SingleSignOutHttpSessionListener;
 import org.jasig.cas.client.util.CommonUtils;
 import org.pac4j.cas.client.CasClient;
@@ -62,12 +59,13 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnWebApplication
 @ConditionalOnClass({ SingleSignOutHttpSessionListener.class, CasConfiguration.class})
 @ConditionalOnProperty(prefix = ShiroPac4jCasProperties.PREFIX, value = "enabled", havingValue = "true")
-@EnableConfigurationProperties({ ShiroPac4jCasProperties.class, ShiroBizProperties.class, ServerProperties.class })
+@EnableConfigurationProperties({ ShiroPac4jCasProperties.class, ShiroPac4jProperties.class, ServerProperties.class })
 public class ShiroPac4jCasConfiguration {
 
 	@Autowired
 	private ShiroPac4jCasProperties casProperties;
-	
+	@Autowired
+	private ShiroPac4jProperties pac4jProperties;
 	@Autowired
 	private ServerProperties serverProperties;
 	
@@ -97,10 +95,7 @@ public class ShiroPac4jCasConfiguration {
 	@Bean
     public CasConfiguration casConfiguration(CasLogoutHandler<WebContext> logoutHandler, UrlResolver urlResolver) {
 
-		// 完整的cas登录地址,比如client项目的https://passport.xxx.com/login?service=https://client.xxx.com
-		String serverLoginUrl = CasUrlUtils.constructLoginRedirectUrl(casProperties, serverProperties.getContextPath(), casProperties.getServerCallbackUrl());
-		
-		CasConfiguration configuration = new CasConfiguration(serverLoginUrl, casProperties.getCasProtocol() );
+		CasConfiguration configuration = new CasConfiguration(casProperties.getCasServerLoginUrl(), casProperties.getCasProtocol() );
 		
 		if(casProperties.isAcceptAnyProxy() && StringUtils.hasText(casProperties.getAllowedProxyChains())) {	
 			configuration.setAcceptAnyProxy(casProperties.isAcceptAnyProxy());
@@ -129,7 +124,7 @@ public class ShiroPac4jCasConfiguration {
 	@Bean
 	@ConditionalOnProperty(prefix = ShiroPac4jCasProperties.PREFIX, value = "casClient", havingValue = "true")
 	public CasClient casClient(CasConfiguration configuration) {
-		return CasClientUtils.casClient(configuration, casProperties, serverProperties);
+		return CasClientUtils.casClient(configuration, pac4jProperties, casProperties, serverProperties);
 	}
 	
 	@Bean

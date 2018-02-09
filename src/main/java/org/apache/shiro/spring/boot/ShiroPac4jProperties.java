@@ -1,6 +1,5 @@
 package org.apache.shiro.spring.boot;
 
-import org.pac4j.cas.authorization.DefaultCasAuthorizationGenerator;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.context.DefaultAuthorizers;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -9,7 +8,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ShiroPac4jProperties {
 
 	public static final String PREFIX = "shiro.pac4j";
-	
+	public static final String DEFAULT_REMEMBER_ME_ATTRIBUTE_NAME = "longTermAuthenticationRequestTokenUsed";
+	 
 	/* ================================== Shiro Pac4j ================================= */
 	
 	/**
@@ -29,7 +29,7 @@ public class ShiroPac4jProperties {
 	private String clientParameterName = Clients.DEFAULT_CLIENT_NAME_PARAMETER;
 	
 	/** default name of the CAS attribute for remember me authentication (CAS 3.4.10+) */
-    private String rememberMeAttributeName = DefaultCasAuthorizationGenerator.DEFAULT_REMEMBER_ME_ATTRIBUTE_NAME;
+    private String rememberMeAttributeName = DEFAULT_REMEMBER_ME_ATTRIBUTE_NAME;
     
     /** SecurityFilter */
     

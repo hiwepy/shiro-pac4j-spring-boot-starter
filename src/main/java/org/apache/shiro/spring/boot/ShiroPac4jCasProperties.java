@@ -34,8 +34,6 @@ public class ShiroPac4jCasProperties {
 	private String allowedProxyChains;
 	/** Specifies the name of the request parameter on where to find the artifact (i.e. ticket). */
 	private String artifactParameterName = "ticket";
-	/** Whether Enable Cas. */
-	private boolean enabled = false;
 	/** Specifies the encoding charset the client should use */
 	private String encoding = "UTF-8";
 	/** Whether the client should auto encode the service url. Defaults to true */
@@ -56,7 +54,7 @@ public class ShiroPac4jCasProperties {
 	 */
 	private String serverName;
 	/** Defines the location of the application cas callback URL, i.e. /callback */
-	private String serverCallbackUrl;
+	//private String serverCallbackUrl;
 	/** The service URL to send to the CAS server, i.e. https://localhost:8443/yourwebapp/index.html */
 	private String service;
 	/** Specifies the name of the request parameter on where to find the service (i.e. service). */
@@ -69,6 +67,9 @@ public class ShiroPac4jCasProperties {
 	private long tolerance = 1000L;
 	
 	/* ================================== Shiro Pac4j Cas ================================= */
+	
+	/** Whether Enable Pac4j Cas. */
+	private boolean enabled = false;
 	
 	/** The protocol of the CAS Client. */
 	private CasProtocol casProtocol = CasProtocol.CAS20_PROXY;
@@ -205,13 +206,13 @@ public class ShiroPac4jCasProperties {
 		this.serverName = serverName;
 	}
 
-	public String getServerCallbackUrl() {
+	/*public String getServerCallbackUrl() {
 		return serverCallbackUrl;
 	}
 
 	public void setServerCallbackUrl(String serverCallbackUrl) {
 		this.serverCallbackUrl = serverCallbackUrl;
-	}
+	}*/
 
 	public String getService() {
 		return service;

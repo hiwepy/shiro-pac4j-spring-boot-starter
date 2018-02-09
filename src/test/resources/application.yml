@@ -27,17 +27,18 @@ shiro:
     /callback : pac4j
     /index : sessionExpired,sessionControl,authc
     /** : sessionExpired,sessionControl,authc
-    pac4j:
+  pac4j:
+    authorizers: xssprotection
+    clients: cas
+    client-name: cas
+    callback-url: /callback
+    enabled: true
+    cas:
       accept-any-proxy: true
-      authorizers: xssprotection
-      enabled: true
-      encoding: UTF-8
       cas-client-name: cas
-      cas-server-login-url: http://127.0.0.1:10000/cas/login
-      cas-server-logout-url: http://127.0.0.1:10000/cas/logout
-      cas-server-url-prefix: http://127.0.0.1:10000/cas
-      clients: cas
-      client-name: cas
-      server-callback-url: /callback
-      server-name: http://127.0.0.1:8081
+      cas-server-login-url: http://10.71.19.215:10000/cas/login
+      cas-server-logout-url: http://10.71.19.215:10000/cas/logout
+      cas-server-url-prefix: http://10.71.19.215:10000/cas
+      server-name: http://10.71.33.167:8181
+      encoding: UTF-8
     

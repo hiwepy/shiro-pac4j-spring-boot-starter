@@ -16,6 +16,7 @@
 package org.apache.shiro.spring.boot.pac4j.utils;
 
 import org.apache.shiro.spring.boot.ShiroPac4jCasProperties;
+import org.apache.shiro.spring.boot.ShiroPac4jProperties;
 import org.apache.shiro.spring.boot.utils.StringUtils;
 import org.pac4j.cas.client.CasClient;
 import org.pac4j.cas.client.direct.DirectCasClient;
@@ -27,11 +28,11 @@ import org.springframework.boot.autoconfigure.web.ServerProperties;
 
 public class CasClientUtils {
 
-	public static CasClient casClient(CasConfiguration configuration, ShiroPac4jCasProperties pac4jProperties,ServerProperties serverProperties) {
+	public static CasClient casClient(CasConfiguration configuration,ShiroPac4jProperties pac4jProperties, ShiroPac4jCasProperties casProperties,ServerProperties serverProperties) {
 
 		CasClient casClient = new CasClient(configuration);
-		casClient.setCallbackUrl( pac4jProperties.getServerCallbackUrl());
-		casClient.setName(StringUtils.hasText(pac4jProperties.getCasClientName()) ? pac4jProperties.getCasClientName() : "CasClient");
+		casClient.setCallbackUrl( pac4jProperties.getCallbackUrl());
+		casClient.setName(StringUtils.hasText(casProperties.getCasClientName()) ? casProperties.getCasClientName() : "CasClient");
 		
 		return casClient;
 	}
