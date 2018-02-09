@@ -36,7 +36,7 @@
 		<cas-client.version>3.5.0</cas-client.version>
         <fastjson.version>1.2.46</fastjson.version>
         <pac4j.version>2.2.1</pac4j.version>
-		<scribejava.version>5.2.0-java7again</scribejava.version>
+		<scribe.version>3.4.1</scribe.version>
 		<shiro.version>1.4.0</shiro.version>
 		<shiro-biz.version>1.0.0-SNAPSHOT</shiro-biz.version>
 		<woodstox-asl.version>4.4.1</woodstox-asl.version>
@@ -105,13 +105,13 @@
 		<dependency>
 		    <groupId>com.github.scribejava</groupId>
 		    <artifactId>scribejava-core</artifactId>
-		    <version>${scribejava.version}</version>
+		    <version>${scribe.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.github.scribejava/scribejava-apis -->
 		<dependency>
 		    <groupId>com.github.scribejava</groupId>
 		    <artifactId>scribejava-apis</artifactId>
-		    <version>${scribejava.version}</version>
+		    <version>${scribe.version}</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.jasig.cas.client/cas-client-core -->
@@ -166,6 +166,13 @@
             <artifactId>pac4j-oauth</artifactId>
             <version>${pac4j.version}</version>
         </dependency>
+        
+        <dependency>
+        	<groupId>com.github.vindell</groupId>
+			<artifactId>pac4j-oauth-ext</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-http</artifactId>

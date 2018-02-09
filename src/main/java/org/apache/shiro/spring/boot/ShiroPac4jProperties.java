@@ -27,7 +27,7 @@ public class ShiroPac4jProperties {
 	private String callbackUrl;
 	/** Specifies the name of the request parameter on where to find the clientName (i.e. client_name). */
 	private String clientParameterName = Clients.DEFAULT_CLIENT_NAME_PARAMETER;
-	
+    private boolean includeClientNameInCallbackUrl = true;
 	/** default name of the CAS attribute for remember me authentication (CAS 3.4.10+) */
     private String rememberMeAttributeName = DEFAULT_REMEMBER_ME_ATTRIBUTE_NAME;
     
@@ -348,6 +348,14 @@ public class ShiroPac4jProperties {
 
 	public void setClientParameterName(String clientParameterName) {
 		this.clientParameterName = clientParameterName;
+	}
+
+	public boolean isIncludeClientNameInCallbackUrl() {
+		return includeClientNameInCallbackUrl;
+	}
+
+	public void setIncludeClientNameInCallbackUrl(boolean includeClientNameInCallbackUrl) {
+		this.includeClientNameInCallbackUrl = includeClientNameInCallbackUrl;
 	}
 
 	public String getRememberMeAttributeName() {

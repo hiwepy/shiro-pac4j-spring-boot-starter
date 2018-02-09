@@ -15,7 +15,12 @@
  */
 package org.apache.shiro.spring.boot;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.shiro.spring.boot.pac4j.property.ShiroPac4jOAuthGenericProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 @ConfigurationProperties(ShiroPac4jOAuthProperties.PREFIX)
 public class ShiroPac4jOAuthProperties {
@@ -25,12 +30,23 @@ public class ShiroPac4jOAuthProperties {
 	/** Whether Enable Pac4j OAuth. */
 	private boolean enabled = false;
 
+	@NestedConfigurationProperty
+	private List<ShiroPac4jOAuthGenericProperties> enerics = new ArrayList<ShiroPac4jOAuthGenericProperties>();
+    
 	public boolean isEnabled() {
 		return enabled;
 	}
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public List<ShiroPac4jOAuthGenericProperties> getEnerics() {
+		return enerics;
+	}
+
+	public void setEnerics(List<ShiroPac4jOAuthGenericProperties> enerics) {
+		this.enerics = enerics;
 	}
 
 }

@@ -15,12 +15,27 @@
  */
 package org.apache.shiro.spring.boot;
 
+import java.util.List;
+
+import org.apache.shiro.spring.boot.pac4j.ext.Pac4jRelativeUrlResolver;
+import org.apache.shiro.spring.boot.pac4j.property.ShiroPac4jOAuthGenericProperties;
+import org.apache.shiro.util.CollectionUtils;
+import org.pac4j.core.http.AjaxRequestResolver;
+import org.pac4j.core.http.DefaultAjaxRequestResolver;
+import org.pac4j.core.http.UrlResolver;
 import org.pac4j.http.client.indirect.FormClient;
 import org.pac4j.http.client.indirect.IndirectBasicAuthClient;
 import org.pac4j.oauth.client.FacebookClient;
+import org.pac4j.oauth.client.GenericOAuth20Client;
+import org.pac4j.oauth.client.QQClient;
+import org.pac4j.oauth.client.SinaWeiboClient;
 import org.pac4j.oauth.client.TwitterClient;
+import org.pac4j.oauth.client.WeiXinClient;
+import org.pac4j.oauth.config.OAuth20Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -37,6 +52,67 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "enabled", havingValue = "true")
 @EnableConfigurationProperties({ ShiroPac4jOAuthProperties.class, ShiroBizProperties.class, ServerProperties.class })
 public class ShiroPac4jOAuthConfiguration {
+
+	@Autowired
+	private ShiroPac4jOAuthProperties oauthProperties; 
+	@Autowired
+	private ShiroPac4jProperties pac4jProperties;
+	@Autowired
+	private ServerProperties serverProperties;
+	
+	@Bean
+	@ConditionalOnMissingBean
+	protected AjaxRequestResolver ajaxRequestResolver() {
+		return new DefaultAjaxRequestResolver();
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	protected UrlResolver urlResolver() {
+		return new Pac4jRelativeUrlResolver(serverProperties.getContextPath());
+	}
+	
+	@Bean
+    public OAuth20Configuration oauth20Configuration( UrlResolver urlResolver) {
+		
+		OAuth20Configuration configuration = new OAuth20Configuration();
+		
+		return configuration;
+	}
+	
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "generic", havingValue = "true")
+	public GenericOAuth20Client genericOAuth20Client(OAuth20Configuration oauth20Configuration,
+			AjaxRequestResolver ajaxRequestResolver,
+			UrlResolver urlResolver) {
+		
+		List<ShiroPac4jOAuthGenericProperties> enerics = oauthProperties.getEnerics();
+		if(!CollectionUtils.isEmpty(enerics)) {
+			
+			for (ShiroPac4jOAuthGenericProperties properties : enerics) {
+				
+				final GenericOAuth20Client oauth20Client = new GenericOAuth20Client();
+			    
+				oauth20Client.setAjaxRequestResolver(ajaxRequestResolver);
+				oauth20Client.setAuthUrl(properties.getAuthUrl());
+				oauth20Client.setCallbackUrl(properties.getProfileUrl());
+				oauth20Client.setConfiguration(oauth20Configuration);
+				oauth20Client.setCustomParams(properties.getCustomParams());
+				oauth20Client.setIncludeClientNameInCallbackUrl(pac4jProperties.isIncludeClientNameInCallbackUrl());
+				oauth20Client.setProfileAttrs(properties.getProfileAttrs());
+				oauth20Client.setSecret(properties.getSecret());
+				oauth20Client.setTokenUrl(properties.getTokenUrl());
+				oauth20Client.setUrlResolver(urlResolver);
+				
+			}
+			
+		}
+		
+		return null;
+		
+	}
+	
 
 	@Bean
 	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "casClient", havingValue = "true")
@@ -55,6 +131,39 @@ public class ShiroPac4jOAuthConfiguration {
 		            "2kAzunH5Btc4gRSaMr7D7MkyoJ5u1VzbOOzE8rBofs");
 	    
 		return twitterClient;
+		
+	}
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "twitter", havingValue = "true")
+	public WeiXinClient weiXinClient() {
+		
+		final WeiXinClient weiXinClient = new WeiXinClient("CoxUiYwQOSFDReZYdjigBA",
+		            "2kAzunH5Btc4gRSaMr7D7MkyoJ5u1VzbOOzE8rBofs");
+	    
+		return weiXinClient;
+		
+	}
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "twitter", havingValue = "true")
+	public SinaWeiboClient sinaWeiboClient() {
+		
+		final SinaWeiboClient weiboClient = new SinaWeiboClient("CoxUiYwQOSFDReZYdjigBA",
+		            "2kAzunH5Btc4gRSaMr7D7MkyoJ5u1VzbOOzE8rBofs");
+	    
+		return weiboClient;
+		
+	}
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "twitter", havingValue = "true")
+	public QQClient qqClient() {
+		
+		final QQClient qqClient = new QQClient("CoxUiYwQOSFDReZYdjigBA",
+		            "2kAzunH5Btc4gRSaMr7D7MkyoJ5u1VzbOOzE8rBofs");
+	    
+		return qqClient;
 		
 	}
 	
