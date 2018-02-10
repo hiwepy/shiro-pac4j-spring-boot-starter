@@ -35,10 +35,16 @@ shiro:
     enabled: true
     cas:
       accept-any-proxy: true
+      cas-client: true
       cas-client-name: cas
       cas-server-login-url: http://10.71.19.215:10000/cas/login
       cas-server-logout-url: http://10.71.19.215:10000/cas/logout
       cas-server-url-prefix: http://10.71.19.215:10000/cas
       server-name: http://10.71.33.167:8181
       encoding: UTF-8
+    oauth:
+      weixin:
+        key: xsadasdsd
+        secret: asdasdsad
+        
     

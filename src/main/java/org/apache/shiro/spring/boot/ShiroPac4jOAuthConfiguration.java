@@ -15,23 +15,52 @@
  */
 package org.apache.shiro.spring.boot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.shiro.spring.boot.pac4j.ext.Pac4jRelativeUrlResolver;
+import org.apache.shiro.spring.boot.pac4j.property.ShiroPac4jOAuthCasClientProperties;
+import org.apache.shiro.spring.boot.pac4j.property.ShiroPac4jOAuthClientProperties;
+import org.apache.shiro.spring.boot.pac4j.property.ShiroPac4jOAuthFacebookClientProperties;
 import org.apache.shiro.spring.boot.pac4j.property.ShiroPac4jOAuthGenericProperties;
+import org.apache.shiro.spring.boot.pac4j.property.ShiroPac4jOAuthOkClientProperties;
+import org.apache.shiro.spring.boot.pac4j.property.ShiroPac4jOAuthStravaClientProperties;
 import org.apache.shiro.util.CollectionUtils;
+import org.pac4j.core.client.Client;
 import org.pac4j.core.http.AjaxRequestResolver;
 import org.pac4j.core.http.DefaultAjaxRequestResolver;
 import org.pac4j.core.http.UrlResolver;
 import org.pac4j.http.client.indirect.FormClient;
 import org.pac4j.http.client.indirect.IndirectBasicAuthClient;
+import org.pac4j.oauth.client.BaiduClient;
+import org.pac4j.oauth.client.BitbucketClient;
+import org.pac4j.oauth.client.CasOAuthWrapperClient;
+import org.pac4j.oauth.client.DropBoxClient;
 import org.pac4j.oauth.client.FacebookClient;
+import org.pac4j.oauth.client.FoursquareClient;
 import org.pac4j.oauth.client.GenericOAuth20Client;
+import org.pac4j.oauth.client.GitHubClient;
+import org.pac4j.oauth.client.Google2Client;
+import org.pac4j.oauth.client.LinkedIn2Client;
+import org.pac4j.oauth.client.OAuth10Client;
+import org.pac4j.oauth.client.OAuth20Client;
+import org.pac4j.oauth.client.OkClient;
+import org.pac4j.oauth.client.OrcidClient;
+import org.pac4j.oauth.client.OschinaClient;
+import org.pac4j.oauth.client.PayPalClient;
 import org.pac4j.oauth.client.QQClient;
 import org.pac4j.oauth.client.SinaWeiboClient;
+import org.pac4j.oauth.client.StravaClient;
 import org.pac4j.oauth.client.TwitterClient;
+import org.pac4j.oauth.client.VkClient;
 import org.pac4j.oauth.client.WeiXinClient;
+import org.pac4j.oauth.client.WindowsLiveClient;
+import org.pac4j.oauth.client.WordPressClient;
+import org.pac4j.oauth.client.YahooClient;
+import org.pac4j.oauth.config.OAuth10Configuration;
 import org.pac4j.oauth.config.OAuth20Configuration;
+import org.pac4j.oauth.profile.OAuth10Profile;
+import org.pac4j.oauth.profile.OAuth20Profile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -72,99 +101,364 @@ public class ShiroPac4jOAuthConfiguration {
 		return new Pac4jRelativeUrlResolver(serverProperties.getContextPath());
 	}
 	
-	@Bean
-    public OAuth20Configuration oauth20Configuration( UrlResolver urlResolver) {
+	/**
+	 * 所有的标准 OAuth 2.0 协议的对接
+	 */
+	@Bean("oauth20Clients")
+	@SuppressWarnings("rawtypes")
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "generics")
+	public List<Client> oauth20Clients(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
 		
-		OAuth20Configuration configuration = new OAuth20Configuration();
-		
-		return configuration;
-	}
-	
-	
-	@Bean
-	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "generic", havingValue = "true")
-	public GenericOAuth20Client genericOAuth20Client(OAuth20Configuration oauth20Configuration,
-			AjaxRequestResolver ajaxRequestResolver,
-			UrlResolver urlResolver) {
-		
-		List<ShiroPac4jOAuthGenericProperties> enerics = oauthProperties.getEnerics();
-		if(!CollectionUtils.isEmpty(enerics)) {
+		List<Client> oauth20Clients = new ArrayList<Client>();
+		List<ShiroPac4jOAuthGenericProperties> generics = oauthProperties.getGenerics();
+		if(!CollectionUtils.isEmpty(generics)) {
 			
-			for (ShiroPac4jOAuthGenericProperties properties : enerics) {
+			for (ShiroPac4jOAuthGenericProperties properties : generics) {
 				
-				final GenericOAuth20Client oauth20Client = new GenericOAuth20Client();
-			    
-				oauth20Client.setAjaxRequestResolver(ajaxRequestResolver);
-				oauth20Client.setAuthUrl(properties.getAuthUrl());
-				oauth20Client.setCallbackUrl(properties.getProfileUrl());
-				oauth20Client.setConfiguration(oauth20Configuration);
-				oauth20Client.setCustomParams(properties.getCustomParams());
-				oauth20Client.setIncludeClientNameInCallbackUrl(pac4jProperties.isIncludeClientNameInCallbackUrl());
-				oauth20Client.setProfileAttrs(properties.getProfileAttrs());
-				oauth20Client.setSecret(properties.getSecret());
-				oauth20Client.setTokenUrl(properties.getTokenUrl());
-				oauth20Client.setUrlResolver(urlResolver);
+				final GenericOAuth20Client client = new GenericOAuth20Client();
 				
+				final OAuth20Configuration configuration = client.getConfiguration();
+				
+				configuration.setConnectTimeout(properties.getConnectTimeout());
+				configuration.setCustomParams(properties.getCustomParams());
+				configuration.setHasGrantType(properties.isHasGrantType());
+				configuration.setReadTimeout(properties.getReadTimeout());
+				configuration.setResponseType(properties.getResponseType());
+				configuration.setScope(properties.getScope());
+				configuration.setStateData(properties.getStateData());
+				configuration.setTokenAsHeader(properties.isTokenAsHeader());
+				configuration.setWithState(properties.isWithState());
+				
+				client.setName(properties.getName());
+				client.setAjaxRequestResolver(ajaxRequestResolver);
+				client.setAuthUrl(properties.getAuthUrl());
+				client.setCallbackUrl(pac4jProperties.getCallbackUrl());
+				client.setConfiguration(configuration);
+				client.setCustomParams(properties.getCustomParams());
+				client.setIncludeClientNameInCallbackUrl(pac4jProperties.isIncludeClientNameInCallbackUrl());
+				client.setProfileAttrs(properties.getProfileAttrs());
+				client.setSecret(properties.getSecret());
+				client.setTokenUrl(properties.getTokenUrl());
+				client.setUrlResolver(urlResolver);
+				
+				oauth20Clients.add(client);
 			}
 			
 		}
 		
-		return null;
+		return oauth20Clients;
 		
 	}
 	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "baidu")
+	public BaiduClient baiduClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
+		
+		final ShiroPac4jOAuthClientProperties properties = oauthProperties.getBaidu();
+		final BaiduClient client = new BaiduClient(properties.getKey(), properties.getSecret());
+		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
+		
+		return client;
+	}
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "bitbucket")
+	public BitbucketClient bitbucketClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
+		
+		final ShiroPac4jOAuthClientProperties properties = oauthProperties.getBitbucket();
+		final BitbucketClient client = new BitbucketClient(properties.getKey(), properties.getSecret());
+		this.initOAuth10Client(client, properties, ajaxRequestResolver, urlResolver);
+		
+		return client;
+	}
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "cas")
+	public CasOAuthWrapperClient casOAuthWrapperClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
+		
+		final ShiroPac4jOAuthCasClientProperties properties = oauthProperties.getCas();
+		final CasOAuthWrapperClient client = new CasOAuthWrapperClient(properties.getKey(), properties.getSecret(), properties.getCasOAuthUrl());
+		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
+		
+		return client;
+	}
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "dropbox")
+	public DropBoxClient dropboxClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
+		
+		final ShiroPac4jOAuthClientProperties properties = oauthProperties.getDropbox();
+		final DropBoxClient client = new DropBoxClient(properties.getKey(), properties.getSecret());
+		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
+		
+		return client;
+	}
 
 	@Bean
-	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "casClient", havingValue = "true")
-	public FacebookClient facebookClient() {
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "facebook")
+	public FacebookClient facebookClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
+
+		final ShiroPac4jOAuthFacebookClientProperties properties = oauthProperties.getFacebook();
+		final FacebookClient client = new FacebookClient(properties.getKey(), properties.getSecret());
+		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
 		
-		final FacebookClient facebookClient = new FacebookClient("145278422258960", "be21409ba8f39b5dae2a7de525484da8");
-	    
-		return facebookClient;
+		client.setFields(properties.getFields());
+		client.setRequiresExtendedToken(properties.isRequiresExtendedToken());
+		client.setLimit(properties.getLimit());
+		
+		return client;
 	}
 	
 	@Bean
-	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "twitter", havingValue = "true")
-	public TwitterClient twitterClient() {
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "foursquare")
+	public FoursquareClient foursquareClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
 		
-		final TwitterClient twitterClient = new TwitterClient("CoxUiYwQOSFDReZYdjigBA",
-		            "2kAzunH5Btc4gRSaMr7D7MkyoJ5u1VzbOOzE8rBofs");
-	    
-		return twitterClient;
+		final ShiroPac4jOAuthClientProperties properties = oauthProperties.getFoursquare();
+		final FoursquareClient client = new FoursquareClient(properties.getKey(), properties.getSecret());
+		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
+		
+		return client;
+	}
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "github")
+	public GitHubClient githubClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
+		
+		final ShiroPac4jOAuthClientProperties properties = oauthProperties.getGithub();
+		final GitHubClient client = new GitHubClient(properties.getKey(), properties.getSecret());
+		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
+		
+		return client;
+	}
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "google2")
+	public Google2Client google2Client(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
+		
+		final ShiroPac4jOAuthClientProperties properties = oauthProperties.getGoogle2();
+		final Google2Client client = new Google2Client(properties.getKey(), properties.getSecret());
+		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
+		
+		return client;
+	}
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "linkedin2")
+	public LinkedIn2Client linkedin2Client(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
+		
+		final ShiroPac4jOAuthClientProperties properties = oauthProperties.getLinkedin2();
+		final LinkedIn2Client client = new LinkedIn2Client(properties.getKey(), properties.getSecret());
+		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
+		
+		return client;
+	}
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "ok")
+	public OkClient okClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
+		
+		final ShiroPac4jOAuthOkClientProperties properties = oauthProperties.getOk();
+		final OkClient client = new OkClient(properties.getKey(), properties.getSecret(), properties.getPublicKey());
+		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
+		
+		return client;
+	}
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "orcid")
+	public OrcidClient orcidClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
+		
+		final ShiroPac4jOAuthClientProperties properties = oauthProperties.getOrcid();
+		final OrcidClient client = new OrcidClient(properties.getKey(), properties.getSecret());
+		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
+		
+		return client;
+	}
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "oschina")
+	public OschinaClient oschinaClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
+		
+		final ShiroPac4jOAuthClientProperties properties = oauthProperties.getOschina();
+		final OschinaClient client = new OschinaClient(properties.getKey(), properties.getSecret());
+		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
+		
+		return client;
+	}
+	
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "paypal")
+	public PayPalClient paypalClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
+		
+		final ShiroPac4jOAuthClientProperties properties = oauthProperties.getPaypal();
+		final PayPalClient client = new PayPalClient(properties.getKey(), properties.getSecret());
+		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
+		
+		return client;
+	}
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "qq")
+	public QQClient qqClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
+		
+		final ShiroPac4jOAuthClientProperties properties = oauthProperties.getQq();
+		final QQClient client = new QQClient(properties.getKey(), properties.getSecret());
+		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
+		
+		return client;
+	}
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "renren")
+	public BaiduClient renrenClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
+		
+		final ShiroPac4jOAuthClientProperties properties = oauthProperties.getRenren();
+		final BaiduClient client = new BaiduClient(properties.getKey(), properties.getSecret());
+		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
+		
+		return client;
+	}
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "strava")
+	public StravaClient stravaClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
+		
+		final ShiroPac4jOAuthStravaClientProperties properties = oauthProperties.getStrava();
+		final StravaClient client = new StravaClient(properties.getKey(), properties.getSecret());
+		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
+		client.setApprovalPrompt(properties.getApprovalPrompt());
+		
+		return client;
+	}
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "twitter")
+	public TwitterClient twitterClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
+		
+		final ShiroPac4jOAuthClientProperties properties = oauthProperties.getTwitter();
+		final TwitterClient client = new TwitterClient(properties.getKey(), properties.getSecret());
+		this.initOAuth10Client(client, properties, ajaxRequestResolver, urlResolver);
+		
+		return client;
 		
 	}
 	
 	@Bean
-	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "twitter", havingValue = "true")
-	public WeiXinClient weiXinClient() {
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "vk")
+	public VkClient vkClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
 		
-		final WeiXinClient weiXinClient = new WeiXinClient("CoxUiYwQOSFDReZYdjigBA",
-		            "2kAzunH5Btc4gRSaMr7D7MkyoJ5u1VzbOOzE8rBofs");
-	    
-		return weiXinClient;
+		final ShiroPac4jOAuthClientProperties properties = oauthProperties.getVk();
+		final VkClient client = new VkClient(properties.getKey(), properties.getSecret());
+		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
+		
+		return client;
+	}
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "weibo")
+	public SinaWeiboClient sinaWeiboClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
+		
+		final ShiroPac4jOAuthClientProperties properties = oauthProperties.getWeibo();
+		final SinaWeiboClient client = new SinaWeiboClient(properties.getKey(), properties.getSecret());
+		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
+		
+		return client;
 		
 	}
 	
 	@Bean
-	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "twitter", havingValue = "true")
-	public SinaWeiboClient sinaWeiboClient() {
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "weixin")
+	public WeiXinClient weiXinClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
 		
-		final SinaWeiboClient weiboClient = new SinaWeiboClient("CoxUiYwQOSFDReZYdjigBA",
-		            "2kAzunH5Btc4gRSaMr7D7MkyoJ5u1VzbOOzE8rBofs");
-	    
-		return weiboClient;
+		final ShiroPac4jOAuthClientProperties properties = oauthProperties.getWeixin();
+		final WeiXinClient client = new WeiXinClient(properties.getKey(), properties.getSecret());
+		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
+		
+		return client;
 		
 	}
 	
 	@Bean
-	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "twitter", havingValue = "true")
-	public QQClient qqClient() {
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "windowslive")
+	public WindowsLiveClient windowsliveClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
 		
-		final QQClient qqClient = new QQClient("CoxUiYwQOSFDReZYdjigBA",
-		            "2kAzunH5Btc4gRSaMr7D7MkyoJ5u1VzbOOzE8rBofs");
-	    
-		return qqClient;
+		final ShiroPac4jOAuthClientProperties properties = oauthProperties.getWindowslive();
+		final WindowsLiveClient client = new WindowsLiveClient(properties.getKey(), properties.getSecret());
+		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
 		
+		return client;
+	}
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "wordpress")
+	public WordPressClient wordpressClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
+		
+		final ShiroPac4jOAuthClientProperties properties = oauthProperties.getWordpress();
+		final WordPressClient client = new WordPressClient(properties.getKey(), properties.getSecret());
+		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
+		
+		return client;
+	}
+	
+	@Bean
+	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "yahoo")
+	public YahooClient yahooClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
+		
+		final ShiroPac4jOAuthClientProperties properties = oauthProperties.getYahoo();
+		final YahooClient client = new YahooClient(properties.getKey(), properties.getSecret());
+		this.initOAuth10Client(client, properties, ajaxRequestResolver, urlResolver);
+		
+		return client;
+	}
+	
+	protected <U extends OAuth10Profile> void initOAuth10Client(OAuth10Client<U> client,
+			ShiroPac4jOAuthClientProperties properties, AjaxRequestResolver ajaxRequestResolver,
+			UrlResolver urlResolver) {
+
+		final OAuth10Configuration configuration = client.getConfiguration();
+		
+		configuration.setConnectTimeout(properties.getConnectTimeout());
+		configuration.setHasGrantType(properties.isHasGrantType());
+		configuration.setReadTimeout(properties.getReadTimeout());
+		configuration.setResponseType(properties.getResponseType());
+		configuration.setTokenAsHeader(properties.isTokenAsHeader());
+		
+		client.setName(properties.getName());
+		client.setAjaxRequestResolver(ajaxRequestResolver);
+		client.setCallbackUrl(pac4jProperties.getCallbackUrl());
+		client.setKey(properties.getKey());
+		client.setConfiguration(configuration);
+		client.setIncludeClientNameInCallbackUrl(pac4jProperties.isIncludeClientNameInCallbackUrl());
+		client.setSecret(properties.getSecret());
+		client.setUrlResolver(urlResolver);
+		
+	}
+
+	protected <U extends OAuth20Profile> void initOAuth20Client(OAuth20Client<U> client,
+			ShiroPac4jOAuthClientProperties properties, AjaxRequestResolver ajaxRequestResolver,
+			UrlResolver urlResolver) {
+
+		final OAuth20Configuration configuration = client.getConfiguration();
+
+		configuration.setConnectTimeout(properties.getConnectTimeout());
+		configuration.setCustomParams(properties.getCustomParams());
+		configuration.setHasGrantType(properties.isHasGrantType());
+		configuration.setReadTimeout(properties.getReadTimeout());
+		configuration.setScope(properties.getScope());
+		configuration.setResponseType(properties.getResponseType());
+		configuration.setWithState(properties.isWithState());
+		configuration.setStateData(properties.getStateData());
+		configuration.setTokenAsHeader(properties.isTokenAsHeader());
+
+		client.setName(properties.getName());
+		client.setAjaxRequestResolver(ajaxRequestResolver);
+		client.setCallbackUrl(pac4jProperties.getCallbackUrl());
+		client.setKey(properties.getKey());
+		client.setConfiguration(configuration);
+		client.setIncludeClientNameInCallbackUrl(pac4jProperties.isIncludeClientNameInCallbackUrl());
+		client.setSecret(properties.getSecret());
+		client.setUrlResolver(urlResolver);
 	}
 	
 }

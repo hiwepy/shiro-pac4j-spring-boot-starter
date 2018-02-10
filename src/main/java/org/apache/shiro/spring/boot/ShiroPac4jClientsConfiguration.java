@@ -79,6 +79,7 @@ public class ShiroPac4jClientsConfiguration implements ApplicationContextAware {
 	
 	@Bean
 	public Clients clients(@Autowired(required = false) @Qualifier("defaultClient") Client defaultClient,
+			@Autowired(required = false) @Qualifier("oauth20Clients") List<Client> oauth20Clients,
 			AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
 		
 		final List<Client> clientList = new ArrayList<Client>();
@@ -88,6 +89,10 @@ public class ShiroPac4jClientsConfiguration implements ApplicationContextAware {
 			while (ite.hasNext()) {
 				clientList.add(ite.next().getValue());
 			}
+		}
+		
+		if(oauth20Clients != null) {
+			clientList.addAll(oauth20Clients);
 		}
 		
 		final Clients clients = new Clients(pac4jProperties.getCallbackUrl(), clientList);
