@@ -89,7 +89,7 @@ public class ShiroPac4jCasConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	protected UrlResolver urlResolver() {
-		return new Pac4jRelativeUrlResolver(serverProperties.getContextPath());
+		return new Pac4jRelativeUrlResolver(serverProperties.getServlet().getContextPath());
 	}
 	
 	@Bean

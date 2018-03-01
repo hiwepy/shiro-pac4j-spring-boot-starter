@@ -74,7 +74,7 @@ public class ShiroPac4jClientsConfiguration implements ApplicationContextAware {
 	@Bean
 	@ConditionalOnMissingBean
 	protected UrlResolver urlResolver() {
-		return new Pac4jRelativeUrlResolver(serverProperties.getContextPath());
+		return new Pac4jRelativeUrlResolver(serverProperties.getServlet().getContextPath());
 	}
 	
 	@Bean
