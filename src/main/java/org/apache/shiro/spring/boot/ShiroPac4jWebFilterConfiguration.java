@@ -149,9 +149,9 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	 * 账号注销过滤器 ：处理账号注销
 	 */
 	@Bean("logout")
-	public FilterRegistrationBean logoutFilter(Config config){
+	public FilterRegistrationBean<LogoutFilter> logoutFilter(Config config){
 		
-		FilterRegistrationBean filterRegistration = new FilterRegistrationBean();
+		FilterRegistrationBean<LogoutFilter> filterRegistration = new FilterRegistrationBean<LogoutFilter>();
 		
 		LogoutFilter logoutFilter = new LogoutFilter();
 	    
@@ -177,9 +177,9 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	 * 权限控制过滤器 ：实现权限认证
 	 */
 	@Bean("authc")
-	public FilterRegistrationBean casSecurityFilter(Config config){
+	public FilterRegistrationBean<SecurityFilter> casSecurityFilter(Config config){
 		
-		FilterRegistrationBean filterRegistration = new FilterRegistrationBean();
+		FilterRegistrationBean<SecurityFilter> filterRegistration = new FilterRegistrationBean<SecurityFilter>();
 		
 		SecurityFilter securityFilter = new SecurityFilter();  
 		
@@ -201,8 +201,8 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	
 	
 	@Bean("user")
-	public FilterRegistrationBean casSsoFilter(){
-		FilterRegistrationBean registration = new FilterRegistrationBean(); 
+	public FilterRegistrationBean<Pac4jUserFilter> pac4jUserFilter(){
+		FilterRegistrationBean<Pac4jUserFilter> registration = new FilterRegistrationBean<Pac4jUserFilter>(); 
 		Pac4jUserFilter userFilter = new Pac4jUserFilter();
 		userFilter.setLoginUrl(pac4jPathBuilder.getLoginURL(serverProperties.getServlet().getContextPath()));
 		registration.setFilter(userFilter);
@@ -215,9 +215,9 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	 * 回调过滤器 ：处理登录后的回调访问
 	 */
 	@Bean("pac4j")
-	public FilterRegistrationBean callbackFilter(Config config){
+	public FilterRegistrationBean<CallbackFilter> callbackFilter(Config config){
 		
-		FilterRegistrationBean filterRegistration = new FilterRegistrationBean();
+		FilterRegistrationBean<CallbackFilter> filterRegistration = new FilterRegistrationBean<CallbackFilter>();
 		
 	    CallbackFilter callbackFilter = new CallbackFilter();
 	    
@@ -262,9 +262,9 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	 * 权限控制过滤器 ：权限过滤链的入口
 	 */
     @Bean(name = "filterShiroFilterRegistrationBean")
-    protected FilterRegistrationBean filterShiroFilterRegistrationBean() throws Exception {
+    protected FilterRegistrationBean<AbstractShiroFilter> filterShiroFilterRegistrationBean() throws Exception {
 
-        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+        FilterRegistrationBean<AbstractShiroFilter> filterRegistrationBean = new FilterRegistrationBean<AbstractShiroFilter>();
         filterRegistrationBean.setFilter((AbstractShiroFilter) shiroFilterFactoryBean().getObject());
         filterRegistrationBean.setOrder(Ordered.LOWEST_PRECEDENCE);
 
