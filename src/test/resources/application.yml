@@ -46,5 +46,10 @@ shiro:
       weixin:
         key: xsadasdsd
         secret: asdasdsad
-        
+    http:
+      enabled: true
+      form-client: true
+      direct-basic-auth-client: true
+      indirect-basic-auth-client: true 
+          
     
