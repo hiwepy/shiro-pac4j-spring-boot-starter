@@ -39,7 +39,7 @@ import org.springframework.context.annotation.Configuration;
 public class ShiroPac4jHttpConfiguration {
 
     @Bean
- 	@ConditionalOnProperty(prefix = ShiroPac4jHttpProperties.PREFIX, value = "casClient", havingValue = "true")
+ 	@ConditionalOnProperty(prefix = ShiroPac4jHttpProperties.PREFIX, value = "form-client", havingValue = "true")
  	public FormClient formClient() {
  		
  		 // HTTP

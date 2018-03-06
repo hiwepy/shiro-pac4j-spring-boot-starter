@@ -50,7 +50,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 
 import io.buji.pac4j.context.ShiroSessionStore;
 import io.buji.pac4j.filter.CallbackFilter;
@@ -261,12 +260,12 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	/**
 	 * 权限控制过滤器 ：权限过滤链的入口
 	 */
-    @Bean(name = "filterShiroFilterRegistrationBean")
+	@Bean(name = "filterShiroFilterRegistrationBean")
     protected FilterRegistrationBean<AbstractShiroFilter> filterShiroFilterRegistrationBean() throws Exception {
 
         FilterRegistrationBean<AbstractShiroFilter> filterRegistrationBean = new FilterRegistrationBean<AbstractShiroFilter>();
         filterRegistrationBean.setFilter((AbstractShiroFilter) shiroFilterFactoryBean().getObject());
-        filterRegistrationBean.setOrder(Ordered.LOWEST_PRECEDENCE);
+        filterRegistrationBean.setOrder(1);
 
         return filterRegistrationBean;
     }

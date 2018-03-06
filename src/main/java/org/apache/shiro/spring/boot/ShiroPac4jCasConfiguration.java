@@ -122,31 +122,31 @@ public class ShiroPac4jCasConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnProperty(prefix = ShiroPac4jCasProperties.PREFIX, value = "casClient", havingValue = "true")
+	@ConditionalOnProperty(prefix = ShiroPac4jCasProperties.PREFIX, value = "cas-client", havingValue = "true")
 	public CasClient casClient(CasConfiguration configuration) {
 		return CasClientUtils.casClient(configuration, pac4jProperties, casProperties, serverProperties);
 	}
 	
 	@Bean
-	@ConditionalOnProperty(prefix = ShiroPac4jCasProperties.PREFIX, value = "directCasClient", havingValue = "true")
+	@ConditionalOnProperty(prefix = ShiroPac4jCasProperties.PREFIX, value = "direct-cas-client", havingValue = "true")
 	public DirectCasClient directCasClient(CasConfiguration configuration) {
 		return CasClientUtils.directCasClient(configuration, casProperties);
 	}
 	
 	@Bean
-	@ConditionalOnProperty(prefix = ShiroPac4jCasProperties.PREFIX, value = "directCasProxyClient", havingValue = "true")
+	@ConditionalOnProperty(prefix = ShiroPac4jCasProperties.PREFIX, value = "direct-cas-proxy-client", havingValue = "true")
 	public DirectCasProxyClient directCasProxyClient(CasConfiguration configuration) {
 		return CasClientUtils.directCasProxyClient(configuration, casProperties, casProperties.getCasServerUrlPrefix());
 	}
 	
 	@Bean
-	@ConditionalOnProperty(prefix = ShiroPac4jCasProperties.PREFIX, value = "casRestBasicAuthClient", havingValue = "true")
+	@ConditionalOnProperty(prefix = ShiroPac4jCasProperties.PREFIX, value = "cas-rest-basic-auth-client", havingValue = "true")
 	public CasRestBasicAuthClient casRestBasicAuthClient(CasConfiguration configuration) {
 		return CasClientUtils.casRestBasicAuthClient(configuration, casProperties);
 	}
 	
 	@Bean
-	@ConditionalOnProperty(prefix = ShiroPac4jCasProperties.PREFIX, value = "casRestFormClient", havingValue = "true")
+	@ConditionalOnProperty(prefix = ShiroPac4jCasProperties.PREFIX, value = "cas-rest-form-client", havingValue = "true")
 	public CasRestFormClient casRestFormClient(CasConfiguration configuration) {
 		return CasClientUtils.casRestFormClient(configuration, casProperties);
 	}
