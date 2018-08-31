@@ -19,7 +19,7 @@ import org.apache.shiro.util.StringUtils;
 import org.pac4j.core.context.ContextHelper;
 import org.pac4j.core.context.HttpConstants;
 import org.pac4j.core.context.WebContext;
-import org.pac4j.core.http.UrlResolver;
+import org.pac4j.core.http.url.UrlResolver;
 
 public class Pac4jRelativeUrlResolver implements UrlResolver {
 

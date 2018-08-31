@@ -17,7 +17,7 @@ package org.apache.shiro.spring.boot;
 
 import java.io.File;
 
-import org.pac4j.core.http.UrlResolver;
+import org.pac4j.core.http.url.UrlResolver;
 import org.pac4j.saml.client.SAML2Client;
 import org.pac4j.saml.client.SAML2ClientConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;

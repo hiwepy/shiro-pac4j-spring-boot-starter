@@ -24,9 +24,9 @@ import java.util.Map.Entry;
 import org.apache.shiro.spring.boot.pac4j.ext.Pac4jRelativeUrlResolver;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
-import org.pac4j.core.http.AjaxRequestResolver;
-import org.pac4j.core.http.DefaultAjaxRequestResolver;
-import org.pac4j.core.http.UrlResolver;
+import org.pac4j.core.http.ajax.AjaxRequestResolver;
+import org.pac4j.core.http.ajax.DefaultAjaxRequestResolver;
+import org.pac4j.core.http.url.UrlResolver;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -100,10 +100,10 @@ public class ShiroPac4jClientsConfiguration implements ApplicationContextAware {
 		clients.setAjaxRequestResolver(ajaxRequestResolver);
 		clients.setCallbackUrl(pac4jProperties.getCallbackUrl());
 		clients.setClients(clientList);
-		clients.setClientNameParameter(pac4jProperties.getClientParameterName());
+		/*clients.setClientNameParameter(pac4jProperties.getClientParameterName());
 		if(defaultClient != null) {
 			clients.setDefaultClient(defaultClient);
-		}
+		}*/
 		clients.setUrlResolver(urlResolver);
 		
 		return clients;

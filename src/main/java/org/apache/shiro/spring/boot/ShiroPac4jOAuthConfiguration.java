@@ -27,9 +27,9 @@ import org.apache.shiro.spring.boot.pac4j.property.ShiroPac4jOAuthOkClientProper
 import org.apache.shiro.spring.boot.pac4j.property.ShiroPac4jOAuthStravaClientProperties;
 import org.apache.shiro.util.CollectionUtils;
 import org.pac4j.core.client.Client;
-import org.pac4j.core.http.AjaxRequestResolver;
-import org.pac4j.core.http.DefaultAjaxRequestResolver;
-import org.pac4j.core.http.UrlResolver;
+import org.pac4j.core.http.ajax.AjaxRequestResolver;
+import org.pac4j.core.http.ajax.DefaultAjaxRequestResolver;
+import org.pac4j.core.http.url.UrlResolver;
 import org.pac4j.http.client.indirect.FormClient;
 import org.pac4j.http.client.indirect.IndirectBasicAuthClient;
 import org.pac4j.oauth.client.BaiduClient;
@@ -46,9 +46,7 @@ import org.pac4j.oauth.client.OAuth10Client;
 import org.pac4j.oauth.client.OAuth20Client;
 import org.pac4j.oauth.client.OkClient;
 import org.pac4j.oauth.client.OrcidClient;
-import org.pac4j.oauth.client.OschinaClient;
 import org.pac4j.oauth.client.PayPalClient;
-import org.pac4j.oauth.client.QQClient;
 import org.pac4j.oauth.client.SinaWeiboClient;
 import org.pac4j.oauth.client.StravaClient;
 import org.pac4j.oauth.client.TwitterClient;
@@ -275,7 +273,7 @@ public class ShiroPac4jOAuthConfiguration {
 		return client;
 	}
 	
-	@Bean
+	/*@Bean
 	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "oschina")
 	public OschinaClient oschinaClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
 		
@@ -284,7 +282,7 @@ public class ShiroPac4jOAuthConfiguration {
 		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
 		
 		return client;
-	}
+	}*/
 	
 	
 	@Bean
@@ -298,7 +296,7 @@ public class ShiroPac4jOAuthConfiguration {
 		return client;
 	}
 	
-	@Bean
+	/*@Bean
 	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "qq")
 	public QQClient qqClient(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
 		
@@ -318,7 +316,7 @@ public class ShiroPac4jOAuthConfiguration {
 		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
 		
 		return client;
-	}
+	}*/
 	
 	@Bean
 	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "strava")

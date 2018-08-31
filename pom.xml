@@ -365,7 +365,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
-        <buji-pac4j.version>3.1.0</buji-pac4j.version> 
+        <buji-pac4j.version>4.0.0</buji-pac4j.version> 
 		<cas-client.version>3.5.0</cas-client.version>
         <fastjson.version>1.2.46</fastjson.version>
         <maven.version>3.0</maven.version>
@@ -375,8 +375,8 @@
         <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
         <maven-surefire-plugin.vertsion>2.21.0</maven-surefire-plugin.vertsion>
 		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
-        <pac4j.version>2.2.1</pac4j.version>
-		<scribe.version>3.4.1</scribe.version>
+        <pac4j.version>3.1.0</pac4j.version>
+		<scribejava.version>5.5.0</scribejava.version>
 		<shiro-biz.version>1.0.0-SNAPSHOT</shiro-biz.version>
 		<woodstox-asl.version>4.4.1</woodstox-asl.version>
 	</properties>
@@ -439,18 +439,17 @@
 		    <artifactId>buji-pac4j</artifactId>
 		    <version>${buji-pac4j.version}</version>
 		</dependency>
-		
 		<!-- https://mvnrepository.com/artifact/com.github.scribejava/scribejava-core -->
 		<dependency>
 		    <groupId>com.github.scribejava</groupId>
 		    <artifactId>scribejava-core</artifactId>
-		    <version>${scribe.version}</version>
+		    <version>${scribejava.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.github.scribejava/scribejava-apis -->
 		<dependency>
 		    <groupId>com.github.scribejava</groupId>
 		    <artifactId>scribejava-apis</artifactId>
-		    <version>${scribe.version}</version>
+		    <version>${scribejava.version}</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.jasig.cas.client/cas-client-core -->
@@ -492,8 +491,7 @@
         <dependency>
 		    <groupId>org.pac4j</groupId>
 		    <artifactId>pac4j-config</artifactId>
-		    <version>2.2.1</version>
-		    <scope>runtime</scope>
+		    <version>${pac4j.version}</version>
 		</dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
@@ -504,12 +502,6 @@
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-oauth</artifactId>
             <version>${pac4j.version}</version>
-        </dependency>
-        
-        <dependency>
-        	<groupId>com.github.vindell</groupId>
-			<artifactId>pac4j-oauth-ext</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
         </dependency>
         
         <dependency>
@@ -554,14 +546,14 @@
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
-            <artifactId>pac4j-stormpath</artifactId>
-            <version>2.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.pac4j</groupId>
             <artifactId>pac4j-sql</artifactId>
             <version>${pac4j.version}</version>
         </dependency>
+        <dependency>
+	        <groupId>com.github.vindell</groupId>
+			<artifactId>pac4j-oauth-ext</artifactId>
+			<version>1.0.0</version>
+		</dependency>
         
         <!-- https://github.com/vindell/spring-boot-starter-shiro-biz -->
 		<dependency>
