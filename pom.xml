@@ -539,11 +539,11 @@
             <artifactId>pac4j-openid</artifactId>
             <version>${pac4j.version}</version>
         </dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-saml</artifactId>
             <version>${pac4j.version}</version>
-        </dependency>
+        </dependency> -->
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-sql</artifactId>
