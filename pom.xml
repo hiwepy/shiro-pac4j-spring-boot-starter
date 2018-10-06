@@ -367,7 +367,7 @@
 		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
         <buji-pac4j.version>4.0.0</buji-pac4j.version> 
 		<cas-client.version>3.5.0</cas-client.version>
-        <fastjson.version>1.2.46</fastjson.version>
+        <fastjson.version>1.2.51</fastjson.version>
         <maven.version>3.0</maven.version>
        	<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
@@ -375,8 +375,8 @@
         <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
         <maven-surefire-plugin.vertsion>2.21.0</maven-surefire-plugin.vertsion>
 		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
-        <pac4j.version>3.1.0</pac4j.version>
-		<scribejava.version>5.5.0</scribejava.version>
+        <pac4j.version>3.2.0</pac4j.version>
+		<scribejava.version>5.6.0</scribejava.version>
 		<shiro-biz.version>1.0.0-SNAPSHOT</shiro-biz.version>
 		<woodstox-asl.version>4.4.1</woodstox-asl.version>
 	</properties>
