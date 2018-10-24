@@ -20,7 +20,7 @@ import org.pac4j.oauth.profile.facebook.FacebookProfileDefinition;
 
 public class ShiroPac4jOAuthFacebookClientProperties extends ShiroPac4jOAuthClientProperties {
 
-	protected String fields = FacebookClient.DEFAULT_FIELDS;
+	protected String fields = FacebookClient.ATTEMPTED_AUTHENTICATION_SUFFIX;
 	protected int limit = FacebookProfileDefinition.DEFAULT_LIMIT;
 	protected boolean requiresExtendedToken = false;
 	protected boolean useAppsecretProof = false;

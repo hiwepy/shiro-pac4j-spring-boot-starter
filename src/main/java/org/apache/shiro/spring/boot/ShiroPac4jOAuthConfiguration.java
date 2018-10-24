@@ -30,6 +30,8 @@ import org.pac4j.core.client.Client;
 import org.pac4j.core.http.ajax.AjaxRequestResolver;
 import org.pac4j.core.http.ajax.DefaultAjaxRequestResolver;
 import org.pac4j.core.http.url.UrlResolver;
+import org.pac4j.core.state.StateGenerator;
+import org.pac4j.core.state.StaticOrRandomStateGenerator;
 import org.pac4j.http.client.indirect.FormClient;
 import org.pac4j.http.client.indirect.IndirectBasicAuthClient;
 import org.pac4j.oauth.client.BaiduClient;
@@ -99,13 +101,20 @@ public class ShiroPac4jOAuthConfiguration {
 		return new Pac4jRelativeUrlResolver(serverProperties.getServlet().getContextPath());
 	}
 	
+	@Bean
+	@ConditionalOnMissingBean
+	protected StateGenerator stateGenerator(ShiroPac4jOAuthGenericProperties properties) {
+		StateGenerator stateGenerator = new StaticOrRandomStateGenerator();
+		return stateGenerator;
+	}
+	
 	/**
 	 * 所有的标准 OAuth 2.0 协议的对接
 	 */
 	@Bean("oauth20Clients")
 	@SuppressWarnings("rawtypes")
 	@ConditionalOnProperty(prefix = ShiroPac4jOAuthProperties.PREFIX, value = "generics")
-	public List<Client> oauth20Clients(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver) {
+	public List<Client> oauth20Clients(AjaxRequestResolver ajaxRequestResolver, UrlResolver urlResolver, StateGenerator stateGenerator) {
 		
 		List<Client> oauth20Clients = new ArrayList<Client>();
 		List<ShiroPac4jOAuthGenericProperties> generics = oauthProperties.getGenerics();
@@ -117,13 +126,13 @@ public class ShiroPac4jOAuthConfiguration {
 				
 				final OAuth20Configuration configuration = client.getConfiguration();
 				
-				configuration.setConnectTimeout(properties.getConnectTimeout());
+				//configuration.setConnectTimeout(properties.getConnectTimeout());
 				configuration.setCustomParams(properties.getCustomParams());
-				configuration.setHasGrantType(properties.isHasGrantType());
-				configuration.setReadTimeout(properties.getReadTimeout());
+				//configuration.setHasGrantType(properties.isHasGrantType());
+				//configuration.setReadTimeout(properties.getReadTimeout());
 				configuration.setResponseType(properties.getResponseType());
 				configuration.setScope(properties.getScope());
-				configuration.setStateData(properties.getStateData());
+				configuration.setStateGenerator(stateGenerator);
 				configuration.setTokenAsHeader(properties.isTokenAsHeader());
 				configuration.setWithState(properties.isWithState());
 				
@@ -133,7 +142,7 @@ public class ShiroPac4jOAuthConfiguration {
 				client.setCallbackUrl(pac4jProperties.getCallbackUrl());
 				client.setConfiguration(configuration);
 				client.setCustomParams(properties.getCustomParams());
-				client.setIncludeClientNameInCallbackUrl(pac4jProperties.isIncludeClientNameInCallbackUrl());
+				// client.setIncludeClientNameInCallbackUrl(pac4jProperties.isIncludeClientNameInCallbackUrl());
 				client.setProfileAttrs(properties.getProfileAttrs());
 				client.setSecret(properties.getSecret());
 				client.setTokenUrl(properties.getTokenUrl());
@@ -201,7 +210,7 @@ public class ShiroPac4jOAuthConfiguration {
 		this.initOAuth20Client(client, properties, ajaxRequestResolver, urlResolver);
 		
 		client.setFields(properties.getFields());
-		client.setRequiresExtendedToken(properties.isRequiresExtendedToken());
+		//client.setRequiresExtendedToken(properties.isRequiresExtendedToken());
 		client.setLimit(properties.getLimit());
 		
 		return client;
@@ -416,9 +425,9 @@ public class ShiroPac4jOAuthConfiguration {
 
 		final OAuth10Configuration configuration = client.getConfiguration();
 		
-		configuration.setConnectTimeout(properties.getConnectTimeout());
-		configuration.setHasGrantType(properties.isHasGrantType());
-		configuration.setReadTimeout(properties.getReadTimeout());
+		//configuration.setConnectTimeout(properties.getConnectTimeout());
+		//configuration.setHasGrantType(properties.isHasGrantType());
+		//configuration.setReadTimeout(properties.getReadTimeout());
 		configuration.setResponseType(properties.getResponseType());
 		configuration.setTokenAsHeader(properties.isTokenAsHeader());
 		
@@ -427,7 +436,7 @@ public class ShiroPac4jOAuthConfiguration {
 		client.setCallbackUrl(pac4jProperties.getCallbackUrl());
 		client.setKey(properties.getKey());
 		client.setConfiguration(configuration);
-		client.setIncludeClientNameInCallbackUrl(pac4jProperties.isIncludeClientNameInCallbackUrl());
+		//client.setIncludeClientNameInCallbackUrl(pac4jProperties.isIncludeClientNameInCallbackUrl());
 		client.setSecret(properties.getSecret());
 		client.setUrlResolver(urlResolver);
 		
@@ -439,14 +448,14 @@ public class ShiroPac4jOAuthConfiguration {
 
 		final OAuth20Configuration configuration = client.getConfiguration();
 
-		configuration.setConnectTimeout(properties.getConnectTimeout());
+		//configuration.setConnectTimeout(properties.getConnectTimeout());
 		configuration.setCustomParams(properties.getCustomParams());
-		configuration.setHasGrantType(properties.isHasGrantType());
-		configuration.setReadTimeout(properties.getReadTimeout());
+		//configuration.setHasGrantType(properties.isHasGrantType());
+		//configuration.setReadTimeout(properties.getReadTimeout());
 		configuration.setScope(properties.getScope());
 		configuration.setResponseType(properties.getResponseType());
 		configuration.setWithState(properties.isWithState());
-		configuration.setStateData(properties.getStateData());
+		//configuration.setStateData(properties.getStateData());
 		configuration.setTokenAsHeader(properties.isTokenAsHeader());
 
 		client.setName(properties.getName());
@@ -454,7 +463,7 @@ public class ShiroPac4jOAuthConfiguration {
 		client.setCallbackUrl(pac4jProperties.getCallbackUrl());
 		client.setKey(properties.getKey());
 		client.setConfiguration(configuration);
-		client.setIncludeClientNameInCallbackUrl(pac4jProperties.isIncludeClientNameInCallbackUrl());
+		//client.setIncludeClientNameInCallbackUrl(pac4jProperties.isIncludeClientNameInCallbackUrl());
 		client.setSecret(properties.getSecret());
 		client.setUrlResolver(urlResolver);
 	}

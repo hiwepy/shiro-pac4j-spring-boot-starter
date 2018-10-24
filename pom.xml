@@ -375,8 +375,8 @@
         <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
         <maven-surefire-plugin.vertsion>2.21.0</maven-surefire-plugin.vertsion>
 		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
-        <pac4j.version>3.2.0</pac4j.version>
-		<scribejava.version>5.6.0</scribejava.version>
+        <pac4j.version>3.3.0</pac4j.version>
+		<scribejava.version>6.0.0</scribejava.version>
 		<spring-boot-starter-shiro-biz.version>1.0.1.RELEASE</spring-boot-starter-shiro-biz.version>
 		<woodstox-asl.version>4.4.1</woodstox-asl.version>
 	</properties>
@@ -480,6 +480,12 @@
             <version>${pac4j.version}</version>
         </dependency>
         <dependency>
+		    <groupId>org.pac4j</groupId>
+		    <artifactId>pac4j-config</artifactId>
+		    <version>${pac4j.version}</version>
+		    <scope>runtime</scope>
+		</dependency>
+        <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-core</artifactId>
             <version>${pac4j.version}</version>
@@ -490,11 +496,6 @@
             <version>${pac4j.version}</version>
         </dependency>
         <dependency>
-		    <groupId>org.pac4j</groupId>
-		    <artifactId>pac4j-config</artifactId>
-		    <version>${pac4j.version}</version>
-		</dependency>
-        <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-gae</artifactId>
             <version>${pac4j.version}</version>
@@ -504,7 +505,11 @@
             <artifactId>pac4j-oauth</artifactId>
             <version>${pac4j.version}</version>
         </dependency>
-        
+         <dependency>
+        	<groupId>com.github.vindell</groupId>
+			<artifactId>pac4j-oauth-ext</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-http</artifactId>
@@ -540,21 +545,26 @@
             <artifactId>pac4j-openid</artifactId>
             <version>${pac4j.version}</version>
         </dependency>
-        <!-- <dependency>
+        <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-saml</artifactId>
             <version>${pac4j.version}</version>
-        </dependency> -->
+            <exclusions>
+            	<exclusion>
+            		<groupId>org.opensaml</groupId>
+            		<artifactId>*</artifactId>
+            	</exclusion>
+            	<exclusion>
+            		<groupId>net.shibboleth.tool</groupId>
+            		<artifactId>*</artifactId>
+            	</exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-sql</artifactId>
             <version>${pac4j.version}</version>
         </dependency>
-        <dependency>
-	        <groupId>com.github.vindell</groupId>
-			<artifactId>pac4j-oauth-ext</artifactId>
-			<version>1.0.0</version>
-		</dependency>
         
         <!-- https://github.com/vindell/spring-boot-starter-shiro-biz -->
 		<dependency>

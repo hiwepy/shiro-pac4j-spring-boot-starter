@@ -1,6 +1,5 @@
 package org.apache.shiro.spring.boot;
 
-import org.pac4j.core.client.Clients;
 import org.pac4j.core.context.DefaultAuthorizers;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -26,7 +25,7 @@ public class ShiroPac4jProperties {
 	/** Defines the location of the client callback URL, i.e. https://localhost:8080/myapp/callback */
 	private String callbackUrl;
 	/** Specifies the name of the request parameter on where to find the clientName (i.e. client_name). */
-	private String clientParameterName = Clients.DEFAULT_CLIENT_NAME_PARAMETER;
+	private String clientParameterName = "client_name";
     private boolean includeClientNameInCallbackUrl = true;
 	/** default name of the CAS attribute for remember me authentication (CAS 3.4.10+) */
     private String rememberMeAttributeName = DEFAULT_REMEMBER_ME_ATTRIBUTE_NAME;
