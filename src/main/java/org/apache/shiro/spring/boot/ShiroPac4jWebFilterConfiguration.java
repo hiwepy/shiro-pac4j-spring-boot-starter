@@ -15,32 +15,21 @@
  */
 package org.apache.shiro.spring.boot;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.shiro.spring.boot.pac4j.Pac4jPathBuilder;
 import org.apache.shiro.spring.boot.pac4j.ShiroPac4jFilterFactoryBean;
 import org.apache.shiro.spring.boot.pac4j.ext.filter.Pac4jUserFilter;
-import org.apache.shiro.spring.boot.pac4j.utils.Pac4jUrlUtils;
-import org.apache.shiro.spring.boot.utils.StringUtils;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.spring.web.config.AbstractShiroWebFilterConfiguration;
 import org.apache.shiro.web.servlet.AbstractShiroFilter;
-import org.pac4j.core.authorization.authorizer.CheckHttpMethodAuthorizer;
-import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
-import org.pac4j.core.context.HttpConstants.HTTP_METHOD;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.session.SessionStore;
-import org.pac4j.core.http.adapter.HttpActionAdapter;
-import org.pac4j.core.http.adapter.J2ENopHttpActionAdapter;
-import org.pac4j.http.authorization.authorizer.IpRegexpAuthorizer;
+import org.pac4j.spring.boot.ext.Pac4jPathBuilder;
+import org.pac4j.spring.boot.ext.property.Pac4jProperties;
+import org.pac4j.spring.boot.utils.Pac4jUrlUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -57,15 +46,6 @@ import io.buji.pac4j.filter.LogoutFilter;
 import io.buji.pac4j.filter.SecurityFilter;
 
 
-/**
- * 
- * @className	： ShiroCasPac4jWebFilterConfiguration
- * @description	： TODO(描述这个类的作用)
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2018年1月25日 下午9:06:14
- * @version 	V1.0
- * @see http://blog.csdn.net/hxpjava1/article/details/77934056
- */
 @Configuration
 @AutoConfigureBefore( name = {
 	"org.apache.shiro.spring.config.web.autoconfigure.ShiroWebFilterConfiguration",  // shiro-spring-boot-web-starter
@@ -80,7 +60,7 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	private ApplicationContext applicationContext;
 
 	@Autowired
-	private ShiroPac4jProperties pac4jProperties;
+	private Pac4jProperties pac4jProperties;
 	@Autowired
 	private ShiroBizProperties bizProperties;
 	@Autowired
@@ -89,61 +69,10 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	private Pac4jPathBuilder pac4jPathBuilder;
 	
 	@Bean
-	@ConditionalOnMissingBean
 	protected SessionStore<J2EContext> sessionStore() {
 		return new ShiroSessionStore();
 	}
 	
-	@Bean
-	@ConditionalOnMissingBean
-	protected HttpActionAdapter<Object, J2EContext> httpActionAdapter() {
-		return J2ENopHttpActionAdapter.INSTANCE;
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	protected Pac4jPathBuilder pac4jPathBuilder() {
-		return new Pac4jPathBuilder();
-	}
-	
-	@Bean
-	public Config config(Clients clients, HttpActionAdapter<Object, J2EContext> httpActionAdapter,
-			SessionStore<J2EContext> sessionStore) {
-
-		final Config config = new Config(clients);
-		
-		if(StringUtils.hasText(pac4jProperties.getAllowedIpRegexpPattern())) {	
-			config.addAuthorizer("isIPAuthenticated", new IpRegexpAuthorizer(pac4jProperties.getAllowedIpRegexpPattern()));
-		}
-		if(ArrayUtils.isNotEmpty(pac4jProperties.getAllowedHttpMethods())) {	
-			String[] allowedHttpMethods = pac4jProperties.getAllowedHttpMethods();
-			List<HTTP_METHOD> methods = new ArrayList<HTTP_METHOD>();
-			for (String method : allowedHttpMethods) {
-				methods.add(HTTP_METHOD.valueOf(method));
-			}
-			config.addAuthorizer("isMethodAuthenticated", new CheckHttpMethodAuthorizer(methods));
-		}
-		
-		/*excludePath
-		excludeRegex
-		excludeBranch
-		
-		[] methods
-		private String headerName;
-	    private String expectedValue;*/
-	    
-	    
-		//config.addMatcher("path", new AntPathMatcher().excludePath("").excludeBranch("").excludeRegex(""));
-		//config.addMatcher("header", new HeaderMatcher());
-		//config.addMatcher("method", new HttpMethodMatcher());
-		
-		config.setClients(clients);
-		config.setHttpActionAdapter(httpActionAdapter);
-		config.setSessionStore(sessionStore);
-		
-		return config;
-	}
- 
 	/**
 	 * 账号注销过滤器 ：处理账号注销
 	 */

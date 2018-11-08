@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import javax.servlet.Filter;
 
 import org.apache.shiro.biz.spring.ShiroFilterProxyFactoryBean;
+import org.apache.shiro.web.filter.AccessControlFilter;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.ApplicationContext;
@@ -18,15 +19,7 @@ import io.buji.pac4j.filter.CallbackFilter;
 import io.buji.pac4j.filter.LogoutFilter;
 import io.buji.pac4j.filter.SecurityFilter;
 
-
-/**
- * 
- * @className	： ShiroPac4jFilterFactoryBean
- * @description	： TODO(描述这个类的作用)
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2018年2月8日 上午9:31:42
- * @version 	V1.0
- */
+@SuppressWarnings("rawtypes")
 public class ShiroPac4jFilterFactoryBean extends ShiroFilterProxyFactoryBean implements ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
@@ -39,7 +32,7 @@ public class ShiroPac4jFilterFactoryBean extends ShiroFilterProxyFactoryBean imp
 	}
 
 	protected boolean supports(Filter filter) {
-		return filter instanceof org.apache.shiro.web.filter.AccessControlFilter ||  filter instanceof org.apache.shiro.web.filter.authc.LogoutFilter
+		return filter instanceof AccessControlFilter ||  filter instanceof org.apache.shiro.web.filter.authc.LogoutFilter
 				|| filter instanceof SecurityFilter || filter instanceof CallbackFilter || filter instanceof LogoutFilter ;
 	}
 	
