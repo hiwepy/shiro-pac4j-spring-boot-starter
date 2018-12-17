@@ -11,13 +11,10 @@ import io.buji.pac4j.subject.Pac4jPrincipal;
 import io.buji.pac4j.token.Pac4jToken;
 
 /**
- * @className ： Pac4jCasRealm
- * @description ： 登录后 Principal 为 Pac4jPrincipal对象,获取cas传递回来的username,通过:String
- *              username = pac4jPrincipal.getProfile().getId();
- *              如果开启了缓存,应重写权限缓存以及认证缓存的key值,在AuthorizingRealm中的getAuthorizationCacheKey以及getAuthenticationCacheKey,推荐使用username来作为缓存key
- * @author ： <a href="https://github.com/vindell">vindell</a>
- * @date ： 2018年1月22日 下午2:59:47
- * @version V1.0
+ * 登录后 Principal 为 Pac4jPrincipal对象,获取cas传递回来的username,
+ * 通过:String username = pac4jPrincipal.getProfile().getId();
+ * 如果开启了缓存,应重写权限缓存以及认证缓存的key值,在AuthorizingRealm中的getAuthorizationCacheKey以及getAuthenticationCacheKey,推荐使用username来作为缓存key
+ * @author 		： <a href="https://github.com/vindell">vindell</a>
  */
 public class Pac4jJwtRealm extends Pac4jRealm {
 
