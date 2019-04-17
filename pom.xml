@@ -365,9 +365,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
-        <buji-pac4j.version>4.0.0</buji-pac4j.version> 
+        <buji-pac4j.version>4.1.0</buji-pac4j.version> 
 		<cas-client.version>3.5.1</cas-client.version>
-        <fastjson.version>1.2.51</fastjson.version>
+        <fastjson.version>1.2.57</fastjson.version>
         <maven.version>3.0</maven.version>
        	<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
@@ -375,12 +375,46 @@
         <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
         <maven-surefire-plugin.vertsion>2.22.1</maven-surefire-plugin.vertsion>
 		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
-        <pac4j.version>3.4.0</pac4j.version>
-		<scribejava.version>6.2.0</scribejava.version>
+        <pac4j.version>3.6.1</pac4j.version>
+		<spring-boot-starter-pac4j.version>1.0.0-SNAPSHOT</spring-boot-starter-pac4j.version>
 		<spring-boot-starter-shiro-biz.version>1.0.4.RELEASE</spring-boot-starter-shiro-biz.version>
 		<woodstox-asl.version>4.4.1</woodstox-asl.version>
 	</properties>
-
+	
+	<dependencyManagement>
+		<dependencies>
+			<!-- https://mvnrepository.com/artifact/io.buji/buji-pac4j -->
+			<dependency>
+			    <groupId>io.buji</groupId>
+			    <artifactId>buji-pac4j</artifactId>
+			    <version>${buji-pac4j.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.pac4j -->
+			<dependency>
+	            <groupId>org.pac4j</groupId>
+	            <artifactId>pac4j-core</artifactId>
+	            <version>${pac4j.version}</version>
+	        </dependency>
+	        <dependency>
+			    <groupId>org.pac4j</groupId>
+			    <artifactId>pac4j-config</artifactId>
+			    <version>${pac4j.version}</version>
+			</dependency>
+			<!-- https://github.com/vindell/spring-boot-starter-pac4j -->
+			<dependency>
+				<groupId>com.github.vindell</groupId>
+				<artifactId>spring-boot-starter-pac4j</artifactId>
+				<version>${spring-boot-starter-pac4j.version}</version>
+			</dependency>
+	        <!-- https://github.com/vindell/spring-boot-starter-shiro-biz -->
+			<dependency>
+				<groupId>com.github.vindell</groupId>
+				<artifactId>spring-boot-starter-shiro-biz</artifactId>
+				<version>${spring-boot-starter-shiro-biz.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
 	<dependencies>
 
 		<!-- Java Servlet API -->
@@ -429,28 +463,30 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-autoconfigure</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/io.buji/buji-pac4j -->
 		<dependency>
 		    <groupId>io.buji</groupId>
 		    <artifactId>buji-pac4j</artifactId>
-		    <version>${buji-pac4j.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.pac4j -->
+		<dependency>
+            <groupId>org.pac4j</groupId>
+            <artifactId>pac4j-core</artifactId>
+        </dependency>
+        <dependency>
+		    <groupId>org.pac4j</groupId>
+		    <artifactId>pac4j-config</artifactId>
 		</dependency>
 		<!-- https://github.com/vindell/spring-boot-starter-pac4j -->
 		<dependency>
 			<groupId>com.github.vindell</groupId>
 			<artifactId>spring-boot-starter-pac4j</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
         <!-- https://github.com/vindell/spring-boot-starter-shiro-biz -->
 		<dependency>
 			<groupId>com.github.vindell</groupId>
 			<artifactId>spring-boot-starter-shiro-biz</artifactId>
-			<version>${spring-boot-starter-shiro-biz.version}</version>
 		</dependency>
         
 	</dependencies>
