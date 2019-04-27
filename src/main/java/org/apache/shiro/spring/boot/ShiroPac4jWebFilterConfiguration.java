@@ -24,6 +24,7 @@ import org.pac4j.core.config.Config;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.spring.boot.ext.Pac4jPathBuilder;
+import org.pac4j.spring.boot.ext.property.Pac4jLogoutProperties;
 import org.pac4j.spring.boot.ext.property.Pac4jProperties;
 import org.pac4j.spring.boot.utils.Pac4jUrlUtils;
 import org.springframework.beans.BeansException;
@@ -62,6 +63,8 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	@Autowired
 	private Pac4jProperties pac4jProperties;
 	@Autowired
+	private Pac4jLogoutProperties logoutProperties;
+	@Autowired
 	private ShiroBizProperties bizProperties;
 	@Autowired
 	private ServerProperties serverProperties;
@@ -84,16 +87,16 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 		LogoutFilter logoutFilter = new LogoutFilter();
 	    
 		// Whether the centralLogout must be performed（是否注销统一身份认证）
-        logoutFilter.setCentralLogout(pac4jProperties.isCentralLogout());
+        logoutFilter.setCentralLogout(logoutProperties.isCentralLogout());
 		// Security Configuration
         logoutFilter.setConfig(config);
         
         // Default logourl url
         logoutFilter.setDefaultUrl(pac4jPathBuilder.getLogoutURL(serverProperties.getServlet().getContextPath()));
         // Whether the application logout must be performed（是否注销本地应用身份认证）
-        logoutFilter.setLocalLogout(pac4jProperties.isLocalLogout());
+        logoutFilter.setLocalLogout(logoutProperties.isLocalLogout());
         // Pattern that logout urls must match（注销登录路径规则，用于匹配登录请求操作）
-        logoutFilter.setLogoutUrlPattern(pac4jProperties.getLogoutUrlPattern());
+        logoutFilter.setLogoutUrlPattern(logoutProperties.getLogoutUrlPattern());
         
         filterRegistration.setFilter(logoutFilter);
 	    filterRegistration.setEnabled(false); 

@@ -2,7 +2,7 @@ package org.apache.shiro.spring.boot.pac4j.ext.realm;
 
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.pac4j.cas.profile.CasProfile;
+import org.pac4j.core.profile.CommonProfile;
 
 import com.google.common.base.Optional;
 
@@ -33,9 +33,8 @@ public class Pac4jAuthorizingRealm extends Pac4jRealm {
 	        Pac4jToken pac4jToken = (Pac4jToken) token;
 	        Object principal = pac4jToken.getPrincipal();
 	        if (principal instanceof Optional) {
-	           
-	            Optional<CasProfile> casProfileOptional = (Optional<CasProfile>) principal;
-	            return casProfileOptional.get().getId();
+	            Optional<CommonProfile> profileOptional = (Optional<CommonProfile>) principal;
+	            return profileOptional.get().getId();
 	        }
 	    }
 	    return super.getAuthenticationCacheKey(token);
