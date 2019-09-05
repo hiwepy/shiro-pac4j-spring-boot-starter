@@ -58,7 +58,7 @@ public class Pac4jCasToken extends Pac4jToken implements HostAuthenticationToken
 
 	@Override
 	public LoginType getLoginType() {
-		return LoginType.SSO;
+		return LoginType.CAS;
 	}
 
 	public void setUsername(String username) {
