@@ -15,12 +15,13 @@
  */
 package org.apache.shiro.spring.boot.pac4j.ext;
 
+import org.apache.shiro.util.AntPathMatcher;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.matching.PathMatcher;
 
 public class Pac4jAntPathMatcher extends PathMatcher {
 	
-	private org.apache.shiro.util.AntPathMatcher matcher = new org.apache.shiro.util.AntPathMatcher();
+	private AntPathMatcher matcher = new AntPathMatcher();
 	 
 	@Override
 	public boolean matches(WebContext context) {
