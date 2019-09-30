@@ -366,7 +366,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
         <buji-pac4j.version>4.1.1</buji-pac4j.version> 
-        <fastjson.version>1.2.58</fastjson.version>
+        <fastjson.version>1.2.61</fastjson.version>
         <maven.version>3.0</maven.version>
        	<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
