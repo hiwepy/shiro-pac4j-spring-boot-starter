@@ -25,7 +25,6 @@ import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.spring.boot.Pac4jLogoutProperties;
 import org.pac4j.spring.boot.Pac4jProperties;
-import org.pac4j.spring.boot.ext.Pac4jPathBuilder;
 import org.pac4j.spring.boot.utils.Pac4jUrlUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,8 +67,6 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	private ShiroBizProperties bizProperties;
 	@Autowired
 	private ServerProperties serverProperties;
-	@Autowired
-	private Pac4jPathBuilder pac4jPathBuilder;
 	
 	@Bean
 	protected SessionStore<J2EContext> sessionStore() {
@@ -92,7 +89,8 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
         logoutFilter.setConfig(config);
         
         // Default logourl url
-        logoutFilter.setDefaultUrl(pac4jPathBuilder.getLogoutURL(serverProperties.getServlet().getContextPath()));
+        String logoutUrl = Pac4jUrlUtils.constructCallbackUrl(serverProperties.getServlet().getContextPath(), pac4jProperties.getLogoutUrl());
+        logoutFilter.setDefaultUrl(logoutUrl);
         // Whether the application logout must be performed（是否注销本地应用身份认证）
         logoutFilter.setLocalLogout(logoutProperties.isLocalLogout());
         // Pattern that logout urls must match（注销登录路径规则，用于匹配登录请求操作）
@@ -135,7 +133,8 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	public FilterRegistrationBean<Pac4jUserFilter> pac4jUserFilter(){
 		FilterRegistrationBean<Pac4jUserFilter> registration = new FilterRegistrationBean<Pac4jUserFilter>(); 
 		Pac4jUserFilter userFilter = new Pac4jUserFilter();
-		userFilter.setLoginUrl(pac4jPathBuilder.getLoginURL(serverProperties.getServlet().getContextPath()));
+		String loginUrl = Pac4jUrlUtils.constructCallbackUrl(serverProperties.getServlet().getContextPath(), pac4jProperties.getLoginUrl());
+		userFilter.setLoginUrl(loginUrl);
 		registration.setFilter(userFilter);
 	    registration.setEnabled(false); 
 	    return registration;
@@ -155,7 +154,8 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	    // Security Configuration
         callbackFilter.setConfig(config);
         // Default url after login if none was requested（登录成功后的重定向地址，等同于shiro的successUrl）
-        callbackFilter.setDefaultUrl(Pac4jUrlUtils.constructCallbackUrl( serverProperties.getServlet().getContextPath(), bizProperties.getSuccessUrl()));
+        String successUrl = Pac4jUrlUtils.constructCallbackUrl(serverProperties.getServlet().getContextPath(), pac4jProperties.getSuccessUrl());
+        callbackFilter.setDefaultUrl(successUrl);
         // Whether multiple profiles should be kept
         callbackFilter.setMultiProfile(pac4jProperties.isMultiProfile());
         
@@ -175,7 +175,8 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 		ShiroFilterFactoryBean filterFactoryBean = new ShiroPac4jFilterFactoryBean();
 		
 		// 登录地址：会话不存在时访问的地址
-		filterFactoryBean.setLoginUrl(pac4jPathBuilder.getLoginURL(serverProperties.getServlet().getContextPath()));
+		String loginUrl = Pac4jUrlUtils.constructCallbackUrl(serverProperties.getServlet().getContextPath(), pac4jProperties.getLoginUrl());
+		filterFactoryBean.setLoginUrl(loginUrl);
 		// 系统主页：登录成功后跳转路径
 		filterFactoryBean.setSuccessUrl(bizProperties.getSuccessUrl());
 		// 异常页面：无权限时的跳转路径
