@@ -23,7 +23,7 @@ import org.apache.shiro.web.servlet.AbstractShiroFilter;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.session.SessionStore;
-import org.pac4j.spring.boot.Pac4jClientsConfiguration;
+import org.pac4j.spring.boot.Pac4jAutoConfiguration;
 import org.pac4j.spring.boot.Pac4jLogoutProperties;
 import org.pac4j.spring.boot.Pac4jProperties;
 import org.pac4j.spring.boot.utils.Pac4jUrlUtils;
@@ -48,7 +48,7 @@ import io.buji.pac4j.filter.SecurityFilter;
 
 
 @Configuration
-@AutoConfigureAfter(Pac4jClientsConfiguration.class)
+@AutoConfigureAfter(Pac4jAutoConfiguration.class)
 @AutoConfigureBefore( name = {
 	"org.apache.shiro.spring.config.web.autoconfigure.ShiroWebFilterConfiguration",  // shiro-spring-boot-web-starter
 	"org.apache.shiro.spring.boot.ShiroBizWebFilterConfiguration" // spring-boot-starter-shiro-biz
