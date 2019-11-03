@@ -95,7 +95,7 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
         // Whether the application logout must be performed（是否注销本地应用身份认证）
         logoutFilter.setLocalLogout(logoutProperties.isLocalLogout());
         // Pattern that logout urls must match（注销登录路径规则，用于匹配登录请求操作）
-        logoutFilter.setLogoutUrlPattern(logoutProperties.getLogoutUrlPattern());
+        logoutFilter.setLogoutUrlPattern(logoutProperties.getPathPattern());
         
         filterRegistration.setFilter(logoutFilter);
 	    filterRegistration.setEnabled(false); 
