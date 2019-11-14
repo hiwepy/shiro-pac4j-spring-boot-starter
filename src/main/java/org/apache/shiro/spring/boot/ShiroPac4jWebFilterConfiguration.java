@@ -87,7 +87,7 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
         logoutFilter.setConfig(config);
         
         // Default logourl url
-        logoutFilter.setDefaultUrl(pac4jProperties.getDefaultUrl());
+        logoutFilter.setDefaultUrl(logoutProperties.getDefaultUrl());
         // Whether the application logout must be performed（是否注销本地应用身份认证）
         logoutFilter.setLocalLogout(logoutProperties.isLocalLogout());
         // Pattern that logout urls must match（注销登录路径规则，用于匹配登录请求操作）
@@ -130,7 +130,7 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	public FilterRegistrationBean<Pac4jUserFilter> pac4jUserFilter(){
 		FilterRegistrationBean<Pac4jUserFilter> registration = new FilterRegistrationBean<Pac4jUserFilter>(); 
 		Pac4jUserFilter userFilter = new Pac4jUserFilter();
-		userFilter.setLoginUrl(pac4jProperties.getDefaultUrl());
+		userFilter.setLoginUrl(pac4jProperties.getLoginUrl());
 		registration.setFilter(userFilter);
 	    registration.setEnabled(false); 
 	    return registration;
@@ -150,7 +150,7 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	    // Security Configuration
         callbackFilter.setConfig(config);
         // Default url after login if none was requested（登录成功后的重定向地址，等同于shiro的successUrl）
-        callbackFilter.setDefaultUrl(pac4jProperties.getDefaultUrl());
+        callbackFilter.setDefaultUrl(pac4jProperties.getLoginUrl());
         // Whether multiple profiles should be kept
         callbackFilter.setMultiProfile(pac4jProperties.isMultiProfile());
         
@@ -170,7 +170,7 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 		ShiroFilterFactoryBean filterFactoryBean = new ShiroPac4jFilterFactoryBean();
 		
 		// 登录地址：会话不存在时访问的地址
-		filterFactoryBean.setLoginUrl(pac4jProperties.getDefaultUrl());
+		filterFactoryBean.setLoginUrl(pac4jProperties.getLoginUrl());
 		// 系统主页：登录成功后跳转路径
 		filterFactoryBean.setSuccessUrl(bizProperties.getSuccessUrl());
 		// 异常页面：无权限时的跳转路径
