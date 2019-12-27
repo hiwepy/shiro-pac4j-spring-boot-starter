@@ -10,12 +10,12 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	
-	<groupId>com.github.vindell</groupId>
+	<groupId>com.github.hiwepy</groupId>
 	<artifactId>spring-boot-starter-shiro-pac4j</artifactId>
 	<description>Spring Boot Starter For Shiro With Pac4j</description>
 	<version>1.0.0-SNAPSHOT</version>
 	<name>${project.groupId}:${project.artifactId}</name>
-	<url>https://github.com/vindell/${project.artifactId}</url>
+	<url>https://github.com/hiwepy/${project.artifactId}</url>
 	<packaging>jar</packaging>
 
 	<licenses>
@@ -26,15 +26,15 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:git:https:github.com/vindell/${project.artifactId}.git</connection>
-		<developerConnection>scm:git:https:github.com/vindell/${project.artifactId}.git</developerConnection>
-		<url>https:github.com/vindell/${project.artifactId}</url>
+		<connection>scm:git:https:github.com/hiwepy/${project.artifactId}.git</connection>
+		<developerConnection>scm:git:https:github.com/hiwepy/${project.artifactId}.git</developerConnection>
+		<url>https:github.com/hiwepy/${project.artifactId}</url>
 		<tag>${project.artifactId}</tag>
 	</scm>
 
 	<developers>
 		<developer>
-			<name>vindell</name>
+			<name>wandl</name>
 			<email>hnxyhcwdl1003@163.com</email>
 			<roles>
 				<role>developer</role>
@@ -376,7 +376,7 @@
 		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
         <pac4j.version>3.6.1</pac4j.version>
 		<spring-boot-starter-pac4j.version>1.0.0-SNAPSHOT</spring-boot-starter-pac4j.version>
-		<spring-boot-starter-shiro-biz.version>1.0.5-SNAPSHOT</spring-boot-starter-shiro-biz.version>
+		<spring-boot-starter-shiro-biz.version>1.0.6-SNAPSHOT</spring-boot-starter-shiro-biz.version>
 		<woodstox-asl.version>4.4.1</woodstox-asl.version>
 	</properties>
 	
@@ -399,15 +399,15 @@
 			    <artifactId>pac4j-config</artifactId>
 			    <version>${pac4j.version}</version>
 			</dependency>
-			<!-- https://github.com/vindell/spring-boot-starter-pac4j -->
+			<!-- https://github.com/hiwepy/spring-boot-starter-pac4j -->
 			<dependency>
-				<groupId>com.github.vindell</groupId>
-				<artifactId>spring-boot-starter-pac4j</artifactId>
+				<groupId>com.github.hiwepy</groupId>
+				<artifactId>pac4j-spring-boot-starter</artifactId>
 				<version>${spring-boot-starter-pac4j.version}</version>
 			</dependency>
-	        <!-- https://github.com/vindell/spring-boot-starter-shiro-biz -->
+	        <!-- https://github.com/hiwepy/spring-boot-starter-shiro-biz -->
 			<dependency>
-				<groupId>com.github.vindell</groupId>
+				<groupId>com.github.hiwepy</groupId>
 				<artifactId>spring-boot-starter-shiro-biz</artifactId>
 				<version>${spring-boot-starter-shiro-biz.version}</version>
 			</dependency>
@@ -477,14 +477,14 @@
 		    <groupId>org.pac4j</groupId>
 		    <artifactId>pac4j-config</artifactId>
 		</dependency>
-		<!-- https://github.com/vindell/spring-boot-starter-pac4j -->
+		<!-- https://github.com/hiwepy/spring-boot-starter-pac4j -->
 		<dependency>
-			<groupId>com.github.vindell</groupId>
-			<artifactId>spring-boot-starter-pac4j</artifactId>
+			<groupId>com.github.hiwepy</groupId>
+			<artifactId>pac4j-spring-boot-starter</artifactId>
 		</dependency>
-        <!-- https://github.com/vindell/spring-boot-starter-shiro-biz -->
+        <!-- https://github.com/hiwepy/spring-boot-starter-shiro-biz -->
 		<dependency>
-			<groupId>com.github.vindell</groupId>
+			<groupId>com.github.hiwepy</groupId>
 			<artifactId>spring-boot-starter-shiro-biz</artifactId>
 		</dependency>
         
