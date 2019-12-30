@@ -1,4 +1,4 @@
-# spring-boot-starter-shiro-pac4j
+# shiro-pac4j-spring-boot-starter
 
 
 ### 说明
@@ -6,14 +6,14 @@
  > 基于开源项目 [buji-pac4j](https://github.com/bujiio/buji-pac4j "buji-pac4j") + [pac4j](https://github.com/pac4j/pac4j "pac4j") 实现的Shiro单点登录 Spring Boot Starter 实现
 
 1. Apache Shiro是一个强大且易用的Java安全框架,执行身份验证、授权、密码学和会话管理。使用Shiro的易于理解的API,您可以快速、轻松地获得任何应用程序,从最小的移动应用程序到最大的网络和企业应用程序。
-2. spring-boot-starter-shiro-pac4j 是在引用 [shiro-spring-boot-starter](http://mvnrepository.com/artifact/org.apache.shiro/shiro-spring-boot-starter "shiro-spring-boot-starter")、[shiro-spring-boot-web-starter](http://mvnrepository.com/artifact/org.apache.shiro/shiro-spring-boot-web-starter "shiro-spring-boot-web-starter")、[spring-boot-starter-shiro-biz](https://github.com/vindell/spring-boot-starter-shiro-biz "spring-boot-starter-shiro-biz") 的基础上整合 [pac4j](https://github.com/pac4j/pac4j "pac4j") 的 Spring Boot 整合；
+2. shiro-pac4j-spring-boot-starter 是在引用 [shiro-spring-boot-starter](http://mvnrepository.com/artifact/org.apache.shiro/shiro-spring-boot-starter "shiro-spring-boot-starter")、[shiro-spring-boot-web-starter](http://mvnrepository.com/artifact/org.apache.shiro/shiro-spring-boot-web-starter "shiro-spring-boot-web-starter")、[shiro-biz-spring-boot-starter](https://github.com/vindell/shiro-biz-spring-boot-starter "shiro-biz-spring-boot-starter") 的基础上整合 [pac4j](https://github.com/pac4j/pac4j "pac4j") 的 Spring Boot 整合；
 3. 整合 Pac4j 实现与Cas认证的对接，借助Pac4j已有的丰富认证协议实现，可使我们的程序具备多种认证协议的支持能力，可在后期很方便的对接其他认证协议；如 OAuth2、OpenID 等
 
 ### Maven
 
 	<dependency>
 		<groupId>${project.groupId}</groupId>
-		<artifactId>spring-boot-starter-shiro-pac4j</artifactId>
+		<artifactId>shiro-pac4j-spring-boot-starter</artifactId>
 		<version>${project.version}</version>
 	</dependency>
 
@@ -68,7 +68,7 @@
 
 ### Sample ： 
 
-[https://github.com/vindell/spring-boot-starter-samples/tree/master/spring-boot-starter-shiro-pac4j](https://github.com/vindell/spring-boot-starter-samples/tree/master/spring-boot-starter-shiro-pac4j "spring-boot-starter-shiro-pac4j")
+[https://github.com/vindell/spring-boot-starter-samples/tree/master/shiro-pac4j-spring-boot-starter](https://github.com/vindell/spring-boot-starter-samples/tree/master/shiro-pac4j-spring-boot-starter "shiro-pac4j-spring-boot-starter")
 
 ### 参考资料
 
