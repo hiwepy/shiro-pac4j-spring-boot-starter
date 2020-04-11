@@ -17,7 +17,7 @@ package org.apache.shiro.spring.boot.pac4j.ext;
 
 import org.apache.shiro.util.AntPathMatcher;
 import org.pac4j.core.context.WebContext;
-import org.pac4j.core.matching.PathMatcher;
+import org.pac4j.core.matching.matcher.PathMatcher;
 
 public class Pac4jAntPathMatcher extends PathMatcher {
 	

@@ -21,7 +21,7 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.spring.web.config.AbstractShiroWebFilterConfiguration;
 import org.apache.shiro.web.servlet.AbstractShiroFilter;
 import org.pac4j.core.config.Config;
-import org.pac4j.core.context.J2EContext;
+import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.spring.boot.Pac4jAutoConfiguration;
 import org.pac4j.spring.boot.Pac4jLogoutProperties;
@@ -67,7 +67,7 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	private ShiroBizProperties bizProperties;
 	
 	@Bean
-	protected SessionStore<J2EContext> sessionStore() {
+	protected SessionStore<JEEContext> sessionStore() {
 		return new ShiroSessionStore();
 	}
 	
