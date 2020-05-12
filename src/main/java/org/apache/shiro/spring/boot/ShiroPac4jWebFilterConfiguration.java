@@ -54,7 +54,7 @@ import io.buji.pac4j.filter.SecurityFilter;
 })
 @ConditionalOnClass({CallbackFilter.class, SecurityFilter.class, LogoutFilter.class})
 @ConditionalOnProperty(prefix = ShiroPac4jProperties.PREFIX, value = "enabled", havingValue = "true")
-@EnableConfigurationProperties({ ShiroPac4jProperties.class, ShiroBizProperties.class, ServerProperties.class })
+@EnableConfigurationProperties({ Pac4jProperties.class, Pac4jLogoutProperties.class, ShiroPac4jProperties.class, ShiroBizProperties.class, ServerProperties.class })
 public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConfiguration implements ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
