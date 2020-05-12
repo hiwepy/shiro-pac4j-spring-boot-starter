@@ -102,8 +102,8 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	/**
 	 * 权限控制过滤器 ：实现权限认证
 	 */
-	@Bean("authc")
-	public FilterRegistrationBean<SecurityFilter> casSecurityFilter(Config config){
+	@Bean("pac4j")
+	public FilterRegistrationBean<SecurityFilter> pac4jSecurityFilter(Config config){
 		
 		FilterRegistrationBean<SecurityFilter> filterRegistration = new FilterRegistrationBean<SecurityFilter>();
 		
@@ -140,7 +140,7 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	/**
 	 * 回调过滤器 ：处理登录后的回调访问
 	 */
-	@Bean("pac4j")
+	@Bean("callback")
 	public FilterRegistrationBean<CallbackFilter> callbackFilter(Config config){
 		
 		FilterRegistrationBean<CallbackFilter> filterRegistration = new FilterRegistrationBean<CallbackFilter>();

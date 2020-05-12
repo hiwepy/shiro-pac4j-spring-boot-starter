@@ -15,15 +15,9 @@
  */
 package org.apache.shiro.spring.boot;
 
-import java.util.Map;
-
-import org.apache.commons.collections.MapUtils;
 import org.apache.shiro.mgt.SubjectFactory;
 import org.apache.shiro.spring.web.config.AbstractShiroWebConfiguration;
-import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
-import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.pac4j.spring.boot.Pac4jAutoConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -46,27 +40,7 @@ import io.buji.pac4j.subject.Pac4jSubjectFactory;
 @ConditionalOnProperty(prefix = ShiroPac4jProperties.PREFIX, value = "enabled", havingValue = "true")
 @EnableConfigurationProperties({ ShiroBizProperties.class })
 public class ShiroPac4jWebAutoConfiguration extends AbstractShiroWebConfiguration {
-	
-	@Autowired
-	private ShiroBizProperties bizProperties;
-	/**
-	 * 责任链定义 ：定义Shiro的逻辑处理责任链
-	 */
-	@Bean
-    @Override
-	protected ShiroFilterChainDefinition shiroFilterChainDefinition() {
-		DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
-		Map<String /* pattert */, String /* Chain names */> pathDefinitions = bizProperties.getFilterChainDefinitionMap();
-		if (MapUtils.isNotEmpty(pathDefinitions)) {
-			chainDefinition.addPathDefinitions(pathDefinitions);
-			return chainDefinition;
-		}
-		chainDefinition.addPathDefinition("/callback", "pac4j");
-		chainDefinition.addPathDefinition("/logout", "logout");
-		chainDefinition.addPathDefinition("/**", "authc");
-		return chainDefinition;
-	}
-	
+
 	@Bean
 	@Override
     protected SubjectFactory subjectFactory() {
