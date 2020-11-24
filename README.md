@@ -11,16 +11,19 @@
 
 ### Maven
 
-	<dependency>
-		<groupId>${project.groupId}</groupId>
-		<artifactId>shiro-pac4j-spring-boot-starter</artifactId>
-		<version>${project.version}</version>
-	</dependency>
+``` xml
+<dependency>
+	<groupId>${project.groupId}</groupId>
+	<artifactId>shiro-pac4j-spring-boot-starter</artifactId>
+	<version>${project.version}</version>
+</dependency>
+```
 
 ### 配置参考
 
- > application.yml
-
+> application.yml
+ 
+```yaml
 	################################################################################################################  
 	###Shiro 权限控制基本配置：  
 	################################################################################################################
@@ -63,13 +66,8 @@
 	      client-name: cas
 	      server-callback-url: /callback
 	      server-name: http://127.0.0.1:8080
-	    
-
-
-### Sample ： 
-
-[https://github.com/vindell/spring-boot-starter-samples/tree/master/shiro-pac4j-spring-boot-starter](https://github.com/vindell/spring-boot-starter-samples/tree/master/shiro-pac4j-spring-boot-starter "shiro-pac4j-spring-boot-starter")
-
+```	    
+ 
 ### 参考资料
 
 http://shiro.apache.org/documentation.html
@@ -81,3 +79,13 @@ http://jinnianshilongnian.iteye.com/blog/2018398
 http://blog.csdn.net/change_on/article/details/76302161
 
 http://blog.csdn.net/ywslakers123/article/details/78288112
+
+
+## Jeebiz 技术社区
+
+Jeebiz 技术社区 **微信公共号**、**小程序**，欢迎关注反馈意见和一起交流，关注公众号回复「Jeebiz」拉你入群。
+
+|公共号|小程序|
+|---|---|
+| ![](https://raw.githubusercontent.com/hiwepy/static/main/images/qrcode_for_gh_1d965ea2dfd1_344.jpg)| ![](https://raw.githubusercontent.com/hiwepy/static/main/images/gh_09d7d00da63e_344.jpg)|
+
