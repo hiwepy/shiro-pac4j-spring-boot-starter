@@ -15,6 +15,7 @@
  */
 package org.apache.shiro.spring.boot;
 
+import org.apache.shiro.biz.spring.ShiroFilterProxyFactoryBean;
 import org.apache.shiro.spring.boot.pac4j.ShiroPac4jFilterFactoryBean;
 import org.apache.shiro.spring.boot.pac4j.ext.filter.Pac4jUserFilter;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -167,7 +168,8 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
     @Override
 	protected ShiroFilterFactoryBean shiroFilterFactoryBean() {
 
-		ShiroFilterFactoryBean filterFactoryBean = new ShiroPac4jFilterFactoryBean();
+		ShiroFilterProxyFactoryBean filterFactoryBean = new ShiroPac4jFilterFactoryBean();
+		filterFactoryBean.setStaticSecurityManagerEnabled(bizProperties.isStaticSecurityManagerEnabled());
 		
 		// 登录地址：会话不存在时访问的地址
 		filterFactoryBean.setLoginUrl(pac4jProperties.getLoginUrl());
