@@ -22,7 +22,6 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.spring.web.config.AbstractShiroWebFilterConfiguration;
 import org.apache.shiro.web.servlet.AbstractShiroFilter;
 import org.pac4j.core.config.Config;
-import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.spring.boot.Pac4jAutoConfiguration;
 import org.pac4j.spring.boot.Pac4jLogoutProperties;
@@ -68,8 +67,8 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	private ShiroBizProperties bizProperties;
 	
 	@Bean
-	protected SessionStore<JEEContext> sessionStore() {
-		return new ShiroSessionStore();
+	protected SessionStore sessionStore() {
+		return ShiroSessionStore.INSTANCE;
 	}
 	
 	/**
@@ -117,8 +116,6 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 		// Security configuration
 		securityFilter.setConfig(config);
 		securityFilter.setMatchers(pac4jProperties.getMatchers());
-		// Whether multiple profiles should be kept
-		securityFilter.setMultiProfile(pac4jProperties.isMultiProfile());
 		
         filterRegistration.setFilter(securityFilter);
 	    filterRegistration.setEnabled(false); 
@@ -152,8 +149,6 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
         callbackFilter.setConfig(config);
         // Default url after login if none was requested（登录成功后的重定向地址，等同于shiro的successUrl）
         callbackFilter.setDefaultUrl(pac4jProperties.getLoginUrl());
-        // Whether multiple profiles should be kept
-        callbackFilter.setMultiProfile(pac4jProperties.isMultiProfile());
         
         filterRegistration.setFilter(callbackFilter);
 	    filterRegistration.setEnabled(false); 
