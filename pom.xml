@@ -367,7 +367,7 @@
 		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
         <pac4j.version>4.4.0</pac4j.version>
 		<spring-boot-starter-pac4j.version>1.0.1.RELEASE</spring-boot-starter-pac4j.version>
-		<spring-boot-starter-shiro-biz.version>1.1.0.RELEASE</spring-boot-starter-shiro-biz.version>
+		<spring-boot-starter-shiro-biz.version>1.1.1.RELEASE</spring-boot-starter-shiro-biz.version>
 	</properties>
 	
 	<dependencyManagement>
