@@ -33,8 +33,8 @@ import io.buji.pac4j.subject.Pac4jSubjectFactory;
 @Configuration
 @AutoConfigureAfter(Pac4jAutoConfiguration.class)
 @AutoConfigureBefore( name = {
-	"org.apache.shiro.spring.config.web.autoconfigure.ShiroWebAutoConfiguration",  // shiro-spring-boot-web-starter
-	"org.apache.shiro.spring.boot.ShiroBizWebAutoConfiguration" // spring-boot-starter-shiro-biz
+	"org.apache.shiro.spring.config.web.autoconfigure.ShiroWebAutoConfiguration",
+	"org.apache.shiro.spring.boot.ShiroBizWebAutoConfiguration"
 })
 @ConditionalOnClass({CallbackFilter.class, SecurityFilter.class, SecurityFilter.class })
 @ConditionalOnProperty(prefix = ShiroPac4jProperties.PREFIX, value = "enabled", havingValue = "true")
@@ -46,5 +46,5 @@ public class ShiroPac4jWebAutoConfiguration extends AbstractShiroWebConfiguratio
     protected SubjectFactory subjectFactory() {
         return new Pac4jSubjectFactory();
     }
-	
+
 }

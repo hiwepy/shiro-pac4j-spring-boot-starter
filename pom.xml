@@ -9,7 +9,7 @@
 		<version>2.3.0.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	
+
 	<groupId>com.github.hiwepy</groupId>
 	<artifactId>shiro-pac4j-spring-boot-starter</artifactId>
 	<description>Spring Boot Starter For Shiro With Pac4j</description>
@@ -42,7 +42,7 @@
 			<timezone>+8</timezone>
 		</developer>
 	</developers>
-	
+
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>
@@ -55,7 +55,7 @@
 		    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		  </repository>
 	</distributionManagement>
-	
+
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -162,8 +162,8 @@
 						<!-- 跳过单元测试 -->
 						<skip>true</skip>
 						<skipTests>true</skipTests>
-						<!-- forkMode 可设置值有 “never”， “once”， “always” 和 “pertest”。 pretest： 
-							每一个测试创建一个新进程，为每个测试创建新的JVM是单独测试的最彻底方式，但也是最慢的，不适合hudson上持续回归。 once：在一个进程中进行所有测试。once为默认设置，在Hudson上持续回归时建议使用默认设置。 
+						<!-- forkMode 可设置值有 “never”， “once”， “always” 和 “pertest”。 pretest：
+							每一个测试创建一个新进程，为每个测试创建新的JVM是单独测试的最彻底方式，但也是最慢的，不适合hudson上持续回归。 once：在一个进程中进行所有测试。once为默认设置，在Hudson上持续回归时建议使用默认设置。
 							always：在一个进程中并行的运行脚本，Junit4.7以上版本才可以使用，surefire的版本要在2.6以上提供这个功能，其中 threadCount：执行时，指定可分配的线程数量。只和参数parallel配合使用有效。默认：5。 -->
 						<forkMode>once</forkMode>
 						<argLine>-Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m -Dfile.encoding=UTF-8</argLine>
@@ -356,8 +356,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
-        <buji-pac4j.version>6.0.0</buji-pac4j.version>
-        <fastjson.version>1.2.75</fastjson.version>
+        <buji-pac4j.version>5.0.1</buji-pac4j.version>
+        <fastjson.version>1.2.79</fastjson.version>
         <maven.version>3.0</maven.version>
        	<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
@@ -365,11 +365,13 @@
         <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
         <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
 		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
-        <pac4j.version>5.0.0</pac4j.version>
-		<spring-boot-starter-pac4j.version>1.0.1.RELEASE</spring-boot-starter-pac4j.version>
-		<spring-boot-starter-shiro-biz.version>1.1.0.RELEASE</spring-boot-starter-shiro-biz.version>
+		<pac4j.version>4.5.5</pac4j.version>
+		<pac4j-biz.version>1.0.2.RELEASE</pac4j-biz.version>
+		<pac4j-oauth-ext.version>1.0.4.RELEASE</pac4j-oauth-ext.version>
+		<spring-boot-starter-pac4j.version>1.0.3.RELEASE</spring-boot-starter-pac4j.version>
+		<spring-boot-starter-shiro-biz.version>1.1.3.RELEASE</spring-boot-starter-shiro-biz.version>
 	</properties>
-	
+
 	<dependencyManagement>
 		<dependencies>
 			<!-- https://mvnrepository.com/artifact/io.buji/buji-pac4j -->
@@ -379,15 +381,106 @@
 			    <version>${buji-pac4j.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.pac4j -->
+
 			<dependency>
-	            <groupId>org.pac4j</groupId>
-	            <artifactId>pac4j-core</artifactId>
-	            <version>${pac4j.version}</version>
-	        </dependency>
-	        <dependency>
-			    <groupId>org.pac4j</groupId>
-			    <artifactId>pac4j-config</artifactId>
-			    <version>${pac4j.version}</version>
+				<groupId>org.pac4j</groupId>
+				<artifactId>pac4j-core</artifactId>
+				<version>${pac4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.pac4j</groupId>
+				<artifactId>pac4j-config</artifactId>
+				<version>${pac4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.hiwepy</groupId>
+				<artifactId>pac4j-biz</artifactId>
+				<version>${pac4j-biz.version}</version>
+			</dependency>
+
+			<!-- PAC4J For CAS Protocol  -->
+			<dependency>
+				<groupId>org.pac4j</groupId>
+				<artifactId>pac4j-cas</artifactId>
+				<version>${pac4j.version}</version>
+			</dependency>
+			<!-- PAC4J For HTTP Protocol  -->
+			<dependency>
+				<groupId>org.pac4j</groupId>
+				<artifactId>pac4j-http</artifactId>
+				<version>${pac4j.version}</version>
+			</dependency>
+			<!-- PAC4J For OAuth Protocol  -->
+			<dependency>
+				<groupId>org.pac4j</groupId>
+				<artifactId>pac4j-oauth</artifactId>
+				<version>${pac4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.hiwepy</groupId>
+				<artifactId>pac4j-oauth-ext</artifactId>
+				<version>${pac4j-oauth-ext.version}</version>
+			</dependency>
+			<!-- PAC4J For OpenId Protocol  -->
+			<dependency>
+				<groupId>org.pac4j</groupId>
+				<artifactId>pac4j-openid</artifactId>
+				<version>${pac4j.version}</version>
+			</dependency>
+			<!-- PAC4J For OpenID Connect Protocol  -->
+			<dependency>
+				<groupId>org.pac4j</groupId>
+				<artifactId>pac4j-oidc</artifactId>
+				<version>${pac4j.version}</version>
+			</dependency>
+			<!-- PAC4J For SAML Protocol  -->
+			<dependency>
+				<groupId>org.pac4j</groupId>
+				<artifactId>pac4j-saml</artifactId>
+				<version>${pac4j.version}</version>
+			</dependency>
+
+			<!-- PAC4J For CouchDB -->
+			<dependency>
+				<groupId>org.pac4j</groupId>
+				<artifactId>pac4j-couch</artifactId>
+				<version>${pac4j.version}</version>
+			</dependency>
+			<!-- PAC4J For GAE UserService Mechanism -->
+			<dependency>
+				<groupId>org.pac4j</groupId>
+				<artifactId>pac4j-gae</artifactId>
+				<version>${pac4j.version}</version>
+			</dependency>
+			<!-- PAC4J For JWT -->
+			<dependency>
+				<groupId>org.pac4j</groupId>
+				<artifactId>pac4j-jwt</artifactId>
+				<version>${pac4j.version}</version>
+			</dependency>
+			<!-- PAC4J For Kerberos -->
+			<dependency>
+				<groupId>org.pac4j</groupId>
+				<artifactId>pac4j-kerberos</artifactId>
+				<version>${pac4j.version}</version>
+			</dependency>
+			<!-- PAC4J For LDAP  -->
+			<dependency>
+				<groupId>org.pac4j</groupId>
+				<artifactId>pac4j-ldap</artifactId>
+				<version>${pac4j.version}</version>
+			</dependency>
+			<!-- PAC4J For MongoDB  -->
+			<dependency>
+				<groupId>org.pac4j</groupId>
+				<artifactId>pac4j-mongo</artifactId>
+				<version>${pac4j.version}</version>
+			</dependency>
+			<!-- PAC4J For Relational DB  -->
+			<dependency>
+				<groupId>org.pac4j</groupId>
+				<artifactId>pac4j-sql</artifactId>
+				<version>${pac4j.version}</version>
 			</dependency>
 			<!-- https://github.com/hiwepy/spring-boot-starter-pac4j -->
 			<dependency>
@@ -403,7 +496,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	
+
 	<dependencies>
 
 		<!-- Java Servlet API -->
@@ -452,7 +545,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-autoconfigure</artifactId>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/io.buji/buji-pac4j -->
 		<dependency>
 		    <groupId>io.buji</groupId>
@@ -477,7 +570,7 @@
 			<groupId>com.github.hiwepy</groupId>
 			<artifactId>shiro-biz-spring-boot-starter</artifactId>
 		</dependency>
-        
+
 	</dependencies>
 
 </project>
