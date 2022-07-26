@@ -74,7 +74,7 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	/**
 	 * 账号注销过滤器 ：处理账号注销
 	 */
-	@Bean("logout")
+	@Bean("pac4j-logout")
 	public FilterRegistrationBean<LogoutFilter> logoutFilter(Config config){
 		
 		FilterRegistrationBean<LogoutFilter> filterRegistration = new FilterRegistrationBean<LogoutFilter>();
@@ -124,7 +124,7 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	}
 	
 	
-	@Bean("user")
+	@Bean("pac4j-user")
 	public FilterRegistrationBean<Pac4jUserFilter> pac4jUserFilter(){
 		FilterRegistrationBean<Pac4jUserFilter> registration = new FilterRegistrationBean<Pac4jUserFilter>(); 
 		Pac4jUserFilter userFilter = new Pac4jUserFilter();
@@ -138,7 +138,7 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	/**
 	 * 回调过滤器 ：处理登录后的回调访问
 	 */
-	@Bean("callback")
+	@Bean("pac4j-callback")
 	public FilterRegistrationBean<CallbackFilter> callbackFilter(Config config){
 		
 		FilterRegistrationBean<CallbackFilter> filterRegistration = new FilterRegistrationBean<CallbackFilter>();
