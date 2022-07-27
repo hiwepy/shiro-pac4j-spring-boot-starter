@@ -24,48 +24,48 @@
 > application.yml
  
 ```yaml
-	################################################################################################################  
-	###Shiro 权限控制基本配置：  
-	################################################################################################################
-	shiro:
-	  enabled: true
-	  validate-captcha: false
-	  login-url: /authz/login
-	  redirect-url: /authz/index
-	  success-url: /index
-	  unauthorized-url: /error
-	  failure-url: /error
-	  annotations: 
-	    enabled: true
-	  web: 
-	    enabled: true
-	  filter-chain-definition-map: 
-	    / : anon
-	    /*favicon.ico : anon
-	    /webjars/** : anon
-	    /assets/** : anon
-	    /html/** : anon
-	    /error* : anon
-	    /logo/** : anon
-	    /kaptcha* : anon
-	    /sockets/** : anon
-	    /logout : logout
-	    /callback : cas
-	    /index : sessionExpired,sessionControl,authc
-	    /** : sessionExpired,sessionControl,authc
-	  pac4j:
-	    cas:
-	      accept-any-proxy: true
-	      authorizers: securityheaders, cas
-	      enabled: true
-	      encoding: UTF-8
-	      cas-client-name: cas
-	      cas-server-login-url: http://127.0.0.1:10000/cas/login
-	      cas-server-logout-url: http://127.0.0.1:10000/cas/logout
-	      cas-server-url-prefix: http://127.0.0.1:10000/cas
-	      client-name: cas
-	      server-callback-url: /callback
-	      server-name: http://127.0.0.1:8080
+################################################################################################################  
+###Shiro 权限控制基本配置：  
+################################################################################################################
+shiro:
+  enabled: true
+  validate-captcha: false
+  login-url: /authz/login
+  redirect-url: /authz/index
+  success-url: /index
+  unauthorized-url: /error
+  failure-url: /error
+  annotations: 
+    enabled: true
+  web: 
+    enabled: true
+  filter-chain-definition-map: 
+    / : anon
+    /*favicon.ico : anon
+    /webjars/** : anon
+    /assets/** : anon
+    /html/** : anon
+    /error* : anon
+    /logo/** : anon
+    /kaptcha* : anon
+    /sockets/** : anon
+    /logout : logout
+    /callback : cas
+    /index : sessionExpired,sessionControl,authc
+    /** : sessionExpired,sessionControl,authc
+  pac4j:
+    cas:
+      accept-any-proxy: true
+      authorizers: securityheaders, cas
+      enabled: true
+      encoding: UTF-8
+      cas-client-name: cas
+      cas-server-login-url: http://127.0.0.1:10000/cas/login
+      cas-server-logout-url: http://127.0.0.1:10000/cas/logout
+      cas-server-url-prefix: http://127.0.0.1:10000/cas
+      client-name: cas
+      server-callback-url: /callback
+      server-name: http://127.0.0.1:8080
 ```	    
  
 ### 参考资料

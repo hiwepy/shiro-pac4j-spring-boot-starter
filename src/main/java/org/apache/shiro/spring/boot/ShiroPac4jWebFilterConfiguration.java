@@ -138,7 +138,7 @@ public class ShiroPac4jWebFilterConfiguration extends AbstractShiroWebFilterConf
 	/**
 	 * 回调过滤器 ：处理登录后的回调访问
 	 */
-	@Bean("callback")
+	@Bean("pac4j-callback")
 	public FilterRegistrationBean<CallbackFilter> callbackFilter(Config config){
 		
 		FilterRegistrationBean<CallbackFilter> filterRegistration = new FilterRegistrationBean<CallbackFilter>();
