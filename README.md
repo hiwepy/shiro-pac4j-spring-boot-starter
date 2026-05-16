@@ -13,7 +13,7 @@
 
 ``` xml
 <dependency>
-	<groupId>com.github.hiwepy</groupId>
+	<groupId>io.github.hiwepy</groupId>
 	<artifactId>shiro-pac4j-spring-boot-starter</artifactId>
 	<version>${project.version}</version>
 </dependency>
