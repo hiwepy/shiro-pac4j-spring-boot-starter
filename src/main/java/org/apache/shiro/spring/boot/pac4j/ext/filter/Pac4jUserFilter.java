@@ -22,7 +22,7 @@ import org.apache.shiro.web.filter.authc.UserFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.pac4j.core.util.Pac4jConstants;
 
-import javax.servlet.ServletRequest;
+import jakarta.servlet.ServletRequest;
 
 public class Pac4jUserFilter extends UserFilter {
 
