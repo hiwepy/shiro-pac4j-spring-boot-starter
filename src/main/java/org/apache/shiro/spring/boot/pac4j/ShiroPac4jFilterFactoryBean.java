@@ -11,7 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.ObjectUtils;
 
-import javax.servlet.Filter;
+import jakarta.servlet.Filter;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
