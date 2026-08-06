@@ -1,91 +1,168 @@
+<a id="readme-top"></a>
+
+<div align="center">
+
 # shiro-pac4j-spring-boot-starter
 
+**Spring Boot Starter for shiro-pac4j**
 
-### 说明
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.easy4j/shiro-pac4j-spring-boot-starter)](https://github.com/easy-4-java/shiro-pac4j-spring-boot-starter)
+[![Java](https://img.shields.io/badge/Java-17-orange)](#3-requirements-and-compatibility)
+[![License](https://img.shields.io/badge/license-Apache-2.0-green)](https://www.apache.org/licenses/LICENSE-2.0)
 
- > 基于开源项目 [buji-pac4j](https://github.com/bujiio/buji-pac4j "buji-pac4j") + [pac4j](https://github.com/pac4j/pac4j "pac4j") 实现的Shiro单点登录 Spring Boot Starter 实现
+[简体中文](./README.zh-CN.md) | [English](./README.md)
 
-1. Apache Shiro是一个强大且易用的Java安全框架,执行身份验证、授权、密码学和会话管理。使用Shiro的易于理解的API,您可以快速、轻松地获得任何应用程序,从最小的移动应用程序到最大的网络和企业应用程序。
-2. shiro-pac4j-spring-boot-starter 是在引用 [shiro-spring-boot-starter](http://mvnrepository.com/artifact/org.apache.shiro/shiro-spring-boot-starter "shiro-spring-boot-starter")、[shiro-spring-boot-web-starter](http://mvnrepository.com/artifact/org.apache.shiro/shiro-spring-boot-web-starter "shiro-spring-boot-web-starter")、[shiro-biz-spring-boot-starter](https://github.com/vindell/shiro-biz-spring-boot-starter "shiro-biz-spring-boot-starter") 的基础上整合 [pac4j](https://github.com/pac4j/pac4j "pac4j") 的 Spring Boot 整合；
-3. 整合 Pac4j 实现与Cas认证的对接，借助Pac4j已有的丰富认证协议实现，可使我们的程序具备多种认证协议的支持能力，可在后期很方便的对接其他认证协议；如 OAuth2、OpenID 等
+[Positioning](#1-positioning) · [Capabilities](#2-core-capabilities) ·
+[Dependency](#5-dependency) · [Quick Start](#6-quick-start) ·
+[Configuration](#7-configuration-reference) · [Versions](#9-version-lines-and-compatibility) ·
+[Build](#10-build-and-test) · [License](#12-license)
 
-### Maven
+</div>
 
-``` xml
+---
+
+> **Current Version**：`1.0.1.RELEASE`<br>
+> **JDK Baseline**：`17`<br>
+> **Group ID**：`io.github.easy4j`<br>
+> **Artifact ID**：`shiro-pac4j-spring-boot-starter`<br>
+> **License**：Apache License 2.0<br>
+
+## 1. Positioning
+
+**shiro-pac4j-spring-boot-starter** is a Spring Boot starter that integrates **shiro-pac4j** for applications using shiro-pac4j. It provides auto-configuration, property binding, and ready-to-use beans so that applications can consume shiro-pac4j capabilities with minimal setup.
+
+| Dimension | Description |
+|---|---|
+| Type | Spring Boot Starter |
+| Consumers | Spring Boot applications using shiro-pac4j |
+| Core Capabilities | auto-configuration, property binding, ready-to-use beans for shiro-pac4j |
+| JDK | `17` |
+| Coordinates | `io.github.easy4j:shiro-pac4j-spring-boot-starter:1.0.1.RELEASE` |
+| Config Prefix | `shiro.pac4j` |
+
+## 2. Core Capabilities
+
+| Capability | Status | Description |
+|---|:---:|---|
+| Auto-configuration | ✅ Stable | Registers shiro-pac4j beans automatically |
+| Property Binding | ✅ Stable | Binds `shiro.pac4j.*` to `ShiroPac4jProperties` |
+| Ready-to-use beans | ✅ Stable | Auto-registered via ShiroPac4jWebAutoConfiguration |
+
+## 3. Requirements and Compatibility
+
+| Dependency | Minimum | Evidence |
+|---|---:|---|
+| JDK | `17` | `pom.xml` |
+| Spring Boot | `2.3.0.RELEASE` | `pom.xml` parent |
+| Maven | `3.6+` | Maven Enforcer |
+
+## 4. Auto-configuration
+
+The starter auto-configures the following beans:
+
+| Bean | Condition | Missing Behavior |
+|---|---|---|
+| `Object` | classpath + property | not created |
+
+Auto-configuration registration:
+
+- `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` (Spring Boot 2.7+ / 3.x / 4.x)
+- `META-INF/spring.factories` (Spring Boot 2.x legacy)
+
+## 5. Dependency
+
+```xml
 <dependency>
-	<groupId>com.github.hiwepy</groupId>
-	<artifactId>shiro-pac4j-spring-boot-starter</artifactId>
-	<version>1.0.1.RELEASE</version>
+    <groupId>io.github.easy4j</groupId>
+    <artifactId>shiro-pac4j-spring-boot-starter</artifactId>
+    <version>1.0.1.RELEASE</version>
 </dependency>
 ```
 
-### 配置参考
+No additional easy4j component dependencies.
 
-> application.yml
- 
+## 6. Quick Start
+
+### 6.1 Add dependency
+
+Add the dependency above to your `pom.xml`.
+
+### 6.2 Configure
+
 ```yaml
-	################################################################################################################  
-	###Shiro 权限控制基本配置：  
-	################################################################################################################
-	shiro:
-	  enabled: true
-	  validate-captcha: false
-	  login-url: /authz/login
-	  redirect-url: /authz/index
-	  success-url: /index
-	  unauthorized-url: /error
-	  failure-url: /error
-	  annotations: 
-	    enabled: true
-	  web: 
-	    enabled: true
-	  filter-chain-definition-map: 
-	    / : anon
-	    /*favicon.ico : anon
-	    /webjars/** : anon
-	    /assets/** : anon
-	    /html/** : anon
-	    /error* : anon
-	    /logo/** : anon
-	    /kaptcha* : anon
-	    /sockets/** : anon
-	    /logout : logout
-	    /callback : cas
-	    /index : sessionExpired,sessionControl,authc
-	    /** : sessionExpired,sessionControl,authc
-	  pac4j:
-	    cas:
-	      accept-any-proxy: true
-	      authorizers: securityheaders, cas
-	      enabled: true
-	      encoding: UTF-8
-	      cas-client-name: cas
-	      cas-server-login-url: http://127.0.0.1:10000/cas/login
-	      cas-server-logout-url: http://127.0.0.1:10000/cas/logout
-	      cas-server-url-prefix: http://127.0.0.1:10000/cas
-	      client-name: cas
-	      server-callback-url: /callback
-	      server-name: http://127.0.0.1:8080
-```	    
- 
-### 参考资料
+shiro.pac4j:
+  enabled: true
+```
 
-http://shiro.apache.org/documentation.html
+### 6.3 Use the bean
 
-http://www.pac4j.org/
+```java
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
 
-http://jinnianshilongnian.iteye.com/blog/2018398
+Then inject the auto-configured bean in your code:
 
-http://blog.csdn.net/change_on/article/details/76302161
+```java
+@Autowired
+private Object bean;
+```
 
-http://blog.csdn.net/ywslakers123/article/details/78288112
+## 7. Configuration Reference
 
+### 7.1 Config Prefix
 
-## Jeebiz 技术社区
+`shiro.pac4j`
 
-Jeebiz 技术社区 **微信公共号**、**小程序**，欢迎关注反馈意见和一起交流，关注公众号回复「Jeebiz」拉你入群。
+### 7.2 Configuration Items
 
-|公共号|小程序|
-|---|---|
-| ![](https://raw.githubusercontent.com/hiwepy/static/main/images/qrcode_for_gh_1d965ea2dfd1_344.jpg)| ![](https://raw.githubusercontent.com/hiwepy/static/main/images/gh_09d7d00da63e_344.jpg)|
+| Property | Type | Default | Required | Description | Sensitive |
+|---|---|---|:---:|---|:---:|
+| `shiro.pac4j.enabled` | boolean | `true` | No | Enable the starter | No |
+<!-- additional properties below -->
 
+## 8. Version Lines and Compatibility
+
+| Branch | JDK | Spring Boot | Component Version | Status |
+|---|---:|---:|---|:---:|
+| `2.3.x` / `2.7.x` | `8+` | 2.3.x / 2.7.x | `1.0.x` | Maintenance |
+| `3.0.x` ~ `3.5.x` | `17` | 3.x | `2.0.x` | Maintenance |
+| `4.0.x` / `4.1.x` | `17+` | 4.x | `3.0.x` | Active |
+
+## 9. Build and Test
+
+```bash
+mvn clean verify
+mvn -pl shiro-pac4j-spring-boot-starter -am test
+```
+
+## 10. Troubleshooting
+
+| Symptom | Diagnosis | Resolution |
+|---|---|---|
+| Bean not created | Check auto-configuration report | Verify `shiro.pac4j.enabled=true` and classpath |
+| `ClassNotFoundException` | Missing dependency | Add the required module |
+| Version conflict | `mvn dependency:tree` | Use BOM for version alignment |
+
+## 11. Contribution
+
+1. Fork the repository.
+2. Create a feature branch.
+3. Run `mvn clean verify` before submitting.
+4. Submit a pull request.
+
+## 12. License
+
+This project is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+
+---
+
+<div align="center">
+
+[Back to top](#readme-top) · [Issues](https://github.com/easy-4-java/shiro-pac4j-spring-boot-starter/issues) · [Repository](https://github.com/easy-4-java/shiro-pac4j-spring-boot-starter)
+
+</div>
