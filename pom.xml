@@ -10,12 +10,12 @@
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>io.github.hiwepy</groupId>
+    <groupId>io.github.easy4j</groupId>
     <artifactId>shiro-pac4j-spring-boot-starter</artifactId>
     <description>Spring Boot Starter For Shiro With Pac4j</description>
     <version>2.0.1-SNAPSHOT</version>
     <name>${project.groupId}:${project.artifactId}</name>
-    <url>https://github.com/hiwepy/${project.artifactId}</url>
+    <url>https://github.com/easy-4-java/${project.artifactId}</url>
     <packaging>jar</packaging>
 
     <licenses>
@@ -28,9 +28,9 @@
 
     <scm>
 
-        <connection>scm:git:https:github.com/hiwepy/${project.artifactId}.git</connection>
-        <developerConnection>scm:git:https:github.com/hiwepy/${project.artifactId}.git</developerConnection>
-        <url>https:github.com/hiwepy/${project.artifactId}</url>
+        <connection>scm:git:https:github.com/easy-4-java/${project.artifactId}.git</connection>
+        <developerConnection>scm:git:https:github.com/easy-4-java/${project.artifactId}.git</developerConnection>
+        <url>https:github.com/easy-4-java/${project.artifactId}</url>
         <tag>${project.artifactId}</tag>
     </scm>
 
@@ -445,7 +445,7 @@
             </dependency>
             <!-- Source: https://github.com/easy-4-java/pac4j-biz — easy4j pac4j-biz -->
             <dependency>
-                <groupId>io.github.hiwepy</groupId>
+                <groupId>io.github.easy4j</groupId>
                 <artifactId>pac4j-biz</artifactId>
                 <version>${pac4j-biz.version}</version>
             </dependency>
@@ -473,7 +473,7 @@
             </dependency>
             <!-- Source: https://github.com/easy-4-java/pac4j-oauth-ext — easy4j pac4j-oauth-ext -->
             <dependency>
-                <groupId>io.github.hiwepy</groupId>
+                <groupId>io.github.easy4j</groupId>
                 <artifactId>pac4j-oauth-ext</artifactId>
                 <version>${pac4j-oauth-ext.version}</version>
             </dependency>
@@ -548,16 +548,16 @@
                 <artifactId>pac4j-sql</artifactId>
                 <version>${pac4j.version}</version>
             </dependency>
-            <!-- https://github.com/hiwepy/spring-boot-starter-pac4j -->
+            <!-- https://github.com/easy-4-java/spring-boot-starter-pac4j -->
             <!-- Source: https://github.com/easy-4-java/pac4j-spring-boot-starter — easy4j pac4j-spring-boot-starter -->
             <dependency>
-                <groupId>io.github.hiwepy</groupId>
+                <groupId>io.github.easy4j</groupId>
                 <artifactId>pac4j-spring-boot-starter</artifactId>
                 <version>${spring-boot-starter-pac4j.version}</version>
             </dependency>
-            <!-- https://github.com/hiwepy/shiro-biz-spring-boot-starter -->
+            <!-- https://github.com/easy-4-java/shiro-biz-spring-boot-starter -->
             <dependency>
-                <groupId>io.github.hiwepy</groupId>
+                <groupId>io.github.easy4j</groupId>
                 <artifactId>shiro-biz-spring-boot-starter</artifactId>
                 <version>${spring-boot-starter-shiro-biz.version}</version>
             </dependency>
@@ -635,15 +635,15 @@
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-config</artifactId>
         </dependency>
-        <!-- https://github.com/hiwepy/spring-boot-starter-pac4j -->
+        <!-- https://github.com/easy-4-java/spring-boot-starter-pac4j -->
         <!-- Source: https://github.com/easy-4-java/pac4j-spring-boot-starter — easy4j pac4j-spring-boot-starter -->
         <dependency>
-            <groupId>io.github.hiwepy</groupId>
+            <groupId>io.github.easy4j</groupId>
             <artifactId>pac4j-spring-boot-starter</artifactId>
         </dependency>
-        <!-- https://github.com/hiwepy/shiro-biz-spring-boot-starter -->
+        <!-- https://github.com/easy-4-java/shiro-biz-spring-boot-starter -->
         <dependency>
-            <groupId>io.github.hiwepy</groupId>
+            <groupId>io.github.easy4j</groupId>
             <artifactId>shiro-biz-spring-boot-starter</artifactId>
         </dependency>
 
