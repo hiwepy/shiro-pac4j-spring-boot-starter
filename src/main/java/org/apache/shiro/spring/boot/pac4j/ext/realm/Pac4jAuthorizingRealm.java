@@ -14,7 +14,7 @@ import java.util.Optional;
  *	通过:String username = pac4jPrincipal.getProfile().getId();
  * 	如果开启了缓存,应重写权限缓存以及认证缓存的key值,在AuthorizingRealm中的getAuthorizationCacheKey以及getAuthenticationCacheKey,推荐使用username来作为缓存key
  * 
- * @author ： <a href="https://github.com/hiwepy">wandl</a>
+ * @author [@Loong Wan](https://github.com/loong10k)
  */
 @SuppressWarnings("unchecked")
 public class Pac4jAuthorizingRealm extends Pac4jRealm {
