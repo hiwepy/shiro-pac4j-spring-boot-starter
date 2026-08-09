@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 @SuppressWarnings("rawtypes")
+/**\n * Auto-configuration for ShiroPac4jFilterFactoryBean.\n *\n * @author [@Loong Wan](https://github.com/loong10k)\n * @since 1.0.0\n */
 public class ShiroPac4jFilterFactoryBean extends ShiroFilterProxyFactoryBean implements ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
