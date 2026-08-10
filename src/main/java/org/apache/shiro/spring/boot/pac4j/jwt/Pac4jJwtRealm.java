@@ -13,7 +13,7 @@ import java.util.List;
  * 登录后 Principal 为 Pac4jPrincipal对象,获取cas传递回来的username,
  * 通过:String username = pac4jPrincipal.getProfile().getId();
  * 如果开启了缓存,应重写权限缓存以及认证缓存的key值,在AuthorizingRealm中的getAuthorizationCacheKey以及getAuthenticationCacheKey,推荐使用username来作为缓存key
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  */
 public class Pac4jJwtRealm extends Pac4jRealm {
 
