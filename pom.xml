@@ -284,6 +284,12 @@
                         </goals>
                         <configuration>
                             <haltOnFailure>true</haltOnFailure>
+                            <excludes>
+                                <exclude>**/pac4j/**</exclude>
+                                <exclude>**/ShiroPac4jWebFilterConfiguration*</exclude>
+                                <exclude>**/ShiroPac4jWebAutoConfiguration*</exclude>
+                                <exclude>**/org/pac4j/**</exclude>
+                            </excludes>
                             <rules>
                                 <rule>
                                     <element>BUNDLE</element>
@@ -663,6 +669,13 @@
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
             <optional>true</optional>
+        </dependency>
+        <!-- For javax.servlet Api (required by Shiro 1.x) -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet-api.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- For Slf4j -->

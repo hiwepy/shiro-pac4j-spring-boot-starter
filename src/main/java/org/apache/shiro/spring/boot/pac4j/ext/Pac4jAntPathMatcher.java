@@ -19,7 +19,7 @@ import org.apache.shiro.util.AntPathMatcher;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.matching.matcher.PathMatcher;
 
-/**\n * Auto-configuration for Pac4jAntPathMatcher.\n *\n * @author [@Loong Wan](https://github.com/loong10k)\n * @since 1.0.0\n */
+/**\n * Auto-configuration for Pac4jAntPathMatcher.\n *\n * @author <a href="https://github.com/loong10k">Loong Wan</a>\n * @since 1.0.0\n */
 public class Pac4jAntPathMatcher extends PathMatcher {
 
 	private AntPathMatcher matcher = new AntPathMatcher();

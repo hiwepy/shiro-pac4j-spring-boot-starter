@@ -4,6 +4,7 @@ import io.buji.pac4j.filter.CallbackFilter;
 import io.buji.pac4j.filter.LogoutFilter;
 import io.buji.pac4j.filter.SecurityFilter;
 import org.apache.shiro.biz.spring.ShiroFilterProxyFactoryBean;
+import org.apache.shiro.spring.boot.utils.JakartaFilterAdapter;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -11,14 +12,19 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.ObjectUtils;
 
-import jakarta.servlet.Filter;
+import javax.servlet.Filter;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/**
+ * Auto-configuration for ShiroPac4jFilterFactoryBean.
+ *
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
+ * @since 1.0.0
+ */
 @SuppressWarnings("rawtypes")
-/**\n * Auto-configuration for ShiroPac4jFilterFactoryBean.\n *\n * @author [@Loong Wan](https://github.com/loong10k)\n * @since 1.0.0\n */
 public class ShiroPac4jFilterFactoryBean extends ShiroFilterProxyFactoryBean implements ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
@@ -30,9 +36,13 @@ public class ShiroPac4jFilterFactoryBean extends ShiroFilterProxyFactoryBean imp
 	public ShiroPac4jFilterFactoryBean() {
 	}
 
-	protected boolean supports(Filter filter) {
-		return filter instanceof AccessControlFilter ||  filter instanceof org.apache.shiro.web.filter.authc.LogoutFilter
-				|| filter instanceof SecurityFilter || filter instanceof CallbackFilter || filter instanceof LogoutFilter ;
+	protected boolean supports(Object filter) {
+		// Unwrap JakartaFilterAdapter if present
+		if (filter instanceof JakartaFilterAdapter) {
+			filter = ((JakartaFilterAdapter) filter).getDelegate();
+		}
+		return filter instanceof AccessControlFilter || filter instanceof org.apache.shiro.web.filter.authc.LogoutFilter
+				|| filter instanceof SecurityFilter || filter instanceof CallbackFilter || filter instanceof LogoutFilter;
 	}
 	
 	// 过滤器链：实现对路径规则的拦截过滤
@@ -46,8 +56,15 @@ public class ShiroPac4jFilterFactoryBean extends ShiroFilterProxyFactoryBean imp
 			Iterator<Entry<String, FilterRegistrationBean>> ite = beansOfType.entrySet().iterator();
 			while (ite.hasNext()) {
 				Entry<String, FilterRegistrationBean> entry = ite.next();
-				if (this.supports(entry.getValue().getFilter())) {
-					filters.put(entry.getKey(), entry.getValue().getFilter());
+				Object filterObj = entry.getValue().getFilter();
+				if (this.supports(filterObj)) {
+					// Unwrap JakartaFilterAdapter to get the original javax.servlet.Filter
+					if (filterObj instanceof JakartaFilterAdapter) {
+						filterObj = ((JakartaFilterAdapter) filterObj).getDelegate();
+					}
+					if (filterObj instanceof Filter) {
+						filters.put(entry.getKey(), (Filter) filterObj);
+					}
 				}
 			}
 		}
@@ -62,7 +79,5 @@ public class ShiroPac4jFilterFactoryBean extends ShiroFilterProxyFactoryBean imp
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
 	}
-
-
 
 }
