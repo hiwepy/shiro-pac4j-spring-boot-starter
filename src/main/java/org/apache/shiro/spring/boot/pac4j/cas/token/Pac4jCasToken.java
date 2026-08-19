@@ -24,6 +24,12 @@ import org.pac4j.core.profile.CommonProfile;
 
 import java.util.List;
 
+/**
+ * <p>Token for Pac4j Cas.</p>
+ *
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
+ * @since 1.0.0
+ */
 @SuppressWarnings("serial")
 public class Pac4jCasToken extends Pac4jToken implements HostAuthenticationToken, RememberMeAuthenticationToken,
 		LoginTypeAuthenticationToken {
@@ -41,37 +47,77 @@ public class Pac4jCasToken extends Pac4jToken implements HostAuthenticationToken
 	}
 
 	@Override
+	/**
+	 * Returns the principal.
+	 *
+	 * @return the principal
+	 */
 	public Object getPrincipal() {
 		return username;
 	}
 
 	@Override
+	/**
+	 * Returns the credentials.
+	 *
+	 * @return the credentials
+	 */
 	public Object getCredentials() {
 		return ticket;
 	}
 
 	@Override
+	/**
+	 * Returns the host.
+	 *
+	 * @return the host
+	 */
 	public String getHost() {
 		return host;
 	}
 
 	@Override
+	/**
+	 * Returns the login type.
+	 *
+	 * @return the login type
+	 */
 	public LoginType getLoginType() {
 		return LoginType.CAS;
 	}
 
+	/**
+	 * Sets the username.
+	 *
+	 * @param username the username
+	 */
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
+	/**
+	 * Sets the host.
+	 *
+	 * @param host the host
+	 */
 	public void setHost(String host) {
 		this.host = host;
 	}
 
+	/**
+	 * Returns the ticket.
+	 *
+	 * @return the ticket
+	 */
 	public String getTicket() {
 		return ticket;
 	}
 
+	/**
+	 * Sets the ticket.
+	 *
+	 * @param ticket the ticket
+	 */
 	public void setTicket(String ticket) {
 		this.ticket = ticket;
 	}

@@ -25,6 +25,12 @@ public class Pac4jAntPathMatcher extends PathMatcher {
 	private AntPathMatcher matcher = new AntPathMatcher();
 
 	@Override
+	/**
+	 * matches.
+	 *
+	 * @param context the context
+	 * @return the result
+	 */
 	public boolean matches(final WebContext context) {
 		for (String pattern : getExcludedPaths()) {
 			if (matcher.match(pattern, context.getPath())) {

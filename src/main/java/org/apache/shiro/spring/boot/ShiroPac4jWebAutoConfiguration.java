@@ -38,6 +38,12 @@ import org.springframework.context.annotation.Configuration;
 	"org.apache.shiro.spring.config.web.autoconfigure.ShiroWebAutoConfiguration",
 	"org.apache.shiro.spring.boot.ShiroBizWebAutoConfiguration"
 })
+/**
+ * <p>Configuration properties.</p>
+ *
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
+ * @since 1.0.0
+ */
 @ConditionalOnClass({CallbackFilter.class, SecurityFilter.class})
 @ConditionalOnProperty(prefix = ShiroPac4jProperties.PREFIX, value = "enabled", havingValue = "true")
 @EnableConfigurationProperties({ ShiroBizProperties.class })

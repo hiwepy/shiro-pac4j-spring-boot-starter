@@ -29,6 +29,11 @@ public class ShiroPac4jFilterFactoryBean extends ShiroFilterProxyFactoryBean imp
 
 	private ApplicationContext applicationContext;
 
+	/**
+	 * Returns the application context.
+	 *
+	 * @return the application context
+	 */
 	public ApplicationContext getApplicationContext() {
 		return applicationContext;
 	}
@@ -76,6 +81,12 @@ public class ShiroPac4jFilterFactoryBean extends ShiroFilterProxyFactoryBean imp
 	}
 
 	@Override
+	/**
+	 * Sets the application context.
+	 *
+	 * @param applicationContext the application context
+	 * @throws BeansException if an error occurs
+	 */
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
 	}
